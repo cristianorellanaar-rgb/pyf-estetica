@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PYF Estética — Agenda de Turnos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rose: #b76e79;
+    --rose-dark: #8f4a54;
+    --blush: #faf1ef;
+    --cream: #fffdfb;
+    --ink: #2e2422;
+    --muted: #8a7a76;
+    --free-bg: #e3f3e5;
+    --free-text: #2f6e3a;
+    --busy-bg: #f6dede;
+    --busy-text: #a33b3b;
+    --border: #eadedb;
+    --shadow: 0 4px 18px rgba(183,110,121,0.14);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--blush);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+  header {
+    background: linear-gradient(135deg, var(--rose), var(--rose-dark));
+    color: #fff;
+    padding: 28px 20px 22px;
+    text-align: center;
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    margin: 0 0 4px;
+    font-size: clamp(22px, 4vw, 30px);
+    letter-spacing: 0.4px;
+  }
+  header p { margin: 0; opacity: 0.92; font-size: 13.5px; }
+
+  .topbar {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 14px 20px 0;
+    display: flex;
+    justify-content: flex-end;
+  }
+  #auth-area { font-size: 13.5px; color: var(--muted); }
+  #auth-area button, .btn {
+    font-family: inherit;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.08s ease, box-shadow 0.15s ease;
+  }
+  .btn-primary { background: var(--rose); color: #fff; }
+  .btn-primary:hover { background: var(--rose-dark); }
+  .btn-ghost { background: transparent; color: var(--rose-dark); border: 1px solid var(--rose); }
+  .btn-ghost:hover { background: rgba(183,110,121,0.08); }
+  .btn-danger { background: #c0453f; color: #fff; }
+  .btn-danger:hover { background: #a3372f; }
+  button:active { transform: scale(0.97); }
+
+  #login-inline { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+  #login-inline input {
+    font-family: inherit;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 13.5px;
+    width: 130px;
+  }
+  #admin-pill {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    background: #fff;
+    border: 1px solid var(--border);
+    padding: 6px 8px 6px 14px;
+    border-radius: 999px;
+    box-shadow: var(--shadow);
+  }
+  #admin-pill span { font-weight: 600; color: var(--rose-dark); }
+  #login-error { color: #a3372f; font-size: 12.5px; width: 100%; text-align: right; min-height: 16px; }
+
+  main { max-width: 1100px; margin: 0 auto; padding: 18px 20px 60px; }
+
+  .week-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin: 6px 0 20px;
+  }
+  .week-nav button {
+    background: #fff;
+    border: 1px solid var(--border);
+    color: var(--rose-dark);
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+  }
+  .week-nav button:hover { background: var(--rose); color: #fff; }
+  .week-label { font-family: 'Playfair Display', serif; font-size: 17px; min-width: 240px; text-align: center; }
+  .week-nav .today-btn {
+    border-radius: 8px; width: auto; padding: 0 12px; height: 32px; font-size: 12.5px; font-weight: 600;
+  }
+
+  .legend { display: flex; gap: 18px; justify-content: center; margin-bottom: 16px; font-size: 12.5px; color: var(--muted); }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .dot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+  .dot.free { background: var(--free-bg); border: 1px solid #9bce9f; }
+  .dot.busy { background: var(--busy-bg); border: 1px solid #d99a9a; }
+
+  .grid-wrap { overflow-x: auto; background: var(--cream); border-radius: 16px; box-shadow: var(--shadow); padding: 10px; }
+  table.agenda { border-collapse: collapse; width: 100%; min-width: 760px; }
+  table.agenda th, table.agenda td { border: 1px solid var(--border); }
+  table.agenda th {
+    background: #fff;
+    padding: 10px 4px;
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    font-size: 14px;
+    position: sticky; top: 0;
+  }
+  table.agenda th small { display: block; font-family: 'Inter', sans-serif; font-weight: 500; color: var(--muted); font-size: 11px; }
+  .hour-cell {
+    padding: 6px 8px;
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    background: #fff;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  .slot {
+    height: 34px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 11.5px;
+    line-height: 1.25;
+    cursor: default;
+    transition: filter 0.1s ease;
+  }
+  .slot.free { background: var(--free-bg); color: var(--free-text); }
+  .slot.busy { background: var(--busy-bg); color: var(--busy-text); font-weight: 600; }
+  .slot.closed { background: repeating-linear-gradient(45deg, #f1e9e7, #f1e9e7 6px, #ece2df 6px, #ece2df 12px); }
+  .slot.admin-clickable { cursor: pointer; }
+  .slot.admin-clickable:hover { filter: brightness(0.94); }
+  .slot .who { display: block; font-weight: 700; }
+  .slot .svc { display: block; opacity: 0.85; font-size: 10.5px; }
+
+  /* Modal */
+  .overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(46,36,34,0.45);
+    align-items: center; justify-content: center;
+    padding: 16px;
+    z-index: 50;
+  }
+  .overlay.show { display: flex; }
+  .modal {
+    background: #fff;
+    border-radius: 16px;
+    width: 100%; max-width: 380px;
+    padding: 22px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+  }
+  .modal h2 { font-family: 'Playfair Display', serif; margin: 0 0 4px; font-size: 19px; }
+  .modal .sub { color: var(--muted); font-size: 13px; margin-bottom: 16px; }
+  .field { margin-bottom: 12px; }
+  .field label { display: block; font-size: 12.5px; font-weight: 600; margin-bottom: 4px; color: var(--muted); }
+  .field input, .field select {
+    width: 100%; padding: 9px 10px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 14px;
+  }
+  .modal-actions { display: flex; gap: 8px; margin-top: 18px; }
+  .modal-actions .btn { flex: 1; }
+  .modal-error { color: #a3372f; font-size: 12.5px; min-height: 16px; margin-top: -4px; margin-bottom: 8px; }
+  .close-x { position: absolute; top: 14px; right: 16px; background: none; border: none; font-size: 20px; color: var(--muted); cursor: pointer; }
+  .modal { position: relative; }
+
+  footer { text-align: center; color: var(--muted); font-size: 12px; padding: 20px; }
+
+  @media (max-width: 640px) {
+    .slot .svc { display: none; }
+    .week-label { min-width: 0; font-size: 15px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>PYF Estética</h1>
+  <p>Agenda de turnos</p>
+</header>
+
+<div class="topbar">
+  <div id="auth-area">
+    <form id="login-inline" autocomplete="off">
+      <input type="text" id="login-user" placeholder="Usuario" autocomplete="username">
+      <input type="password" id="login-pass" placeholder="Contraseña" autocomplete="current-password">
+      <button type="submit" class="btn btn-primary">Ingresar</button>
+      <div id="login-error"></div>
+    </form>
+    <div id="admin-pill">
+      <span>Administradora</span>
+      <button id="logout-btn" class="btn btn-ghost">Salir</button>
+    </div>
+  </div>
+</div>
+
+<main>
+  <div class="week-nav">
+    <button id="prev-week" aria-label="Semana anterior">‹</button>
+    <div class="week-label" id="week-label">—</div>
+    <button id="next-week" aria-label="Semana siguiente">›</button>
+    <button id="today-btn" class="today-btn btn-ghost">Hoy</button>
+  </div>
+
+  <div class="legend">
+    <span><i class="dot free"></i> Disponible</span>
+    <span><i class="dot busy"></i> Ocupado</span>
+  </div>
+
+  <div class="grid-wrap">
+    <table class="agenda" id="agenda-table">
+      <thead>
+        <tr id="agenda-head"></tr>
+      </thead>
+      <tbody id="agenda-body"></tbody>
+    </table>
+  </div>
+</main>
+
+<footer>PYF Estética · Martes a sábados, 08–12 y 13–20 hs</footer>
+
+<!-- Modal: nuevo turno -->
+<div class="overlay" id="new-overlay">
+  <div class="modal">
+    <button class="close-x" data-close>×</button>
+    <h2>Nuevo turno</h2>
+    <div class="sub" id="new-sub"></div>
+    <form id="new-form">
+      <div class="field">
+        <label for="f-cliente">Cliente</label>
+        <input type="text" id="f-cliente" required>
+      </div>
+      <div class="field">
+        <label for="f-telefono">Teléfono</label>
+        <input type="tel" id="f-telefono" required>
+      </div>
+      <div class="field">
+        <label for="f-servicio">Servicio</label>
+        <input type="text" id="f-servicio" list="servicios-sugeridos" required placeholder="Ej: Manicuría">
+        <datalist id="servicios-sugeridos">
+          <option value="Manicuría"></option>
+          <option value="Pedicuría"></option>
+          <option value="Depilación"></option>
+          <option value="Limpieza facial"></option>
+          <option value="Masajes"></option>
+          <option value="Peinado"></option>
+        </datalist>
+      </div>
+      <div class="field">
+        <label for="f-duracion">Duración</label>
+        <select id="f-duracion" required>
+          <option value="30">30 minutos</option>
+          <option value="45">45 minutos</option>
+          <option value="60" selected>1 hora</option>
+          <option value="90">1 hora 30</option>
+          <option value="120">2 horas</option>
+        </select>
+      </div>
+      <div class="modal-error" id="new-error"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" data-close>Cancelar</button>
+        <button type="submit" class="btn btn-primary">Guardar turno</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: ver / borrar turno -->
+<div class="overlay" id="view-overlay">
+  <div class="modal">
+    <button class="close-x" data-close>×</button>
+    <h2 id="view-cliente">—</h2>
+    <div class="sub" id="view-sub"></div>
+    <div class="field"><label>Servicio</label><div id="view-servicio">—</div></div>
+    <div class="field"><label>Teléfono</label><div id="view-telefono">—</div></div>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-ghost" data-close>Cerrar</button>
+      <button type="button" class="btn btn-danger" id="delete-btn">Eliminar turno</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+import {
+  getFirestore, collection, doc, query, where, getDocs,
+  writeBatch, onSnapshot, deleteDoc
+} from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+import {
+  getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+
+/* ======================================================================
+   CONFIGURACIÓN DE FIREBASE — completar con los datos de TU proyecto
+   (Firebase Console → Configuración del proyecto → Tus apps → SDK setup)
+   ====================================================================== */
+const firebaseConfig = {
+  apiKey: "AIzaSyBYLPdFHiheMRJJdITq2cHP8zZvPEux448",
+  authDomain: "pyf-estetica.firebaseapp.com",
+  projectId: "pyf-estetica",
+  storageBucket: "pyf-estetica.firebasestorage.app",
+  messagingSenderId: "85421227791",
+  appId: "1:85421227791:web:d98a132290441c77f7887a"
+};
+
+// El usuario "administrador" se mapea internamente a este email de Firebase Auth.
+// Tiene que coincidir con el usuario que crees en Firebase Auth (ver instrucciones).
+const ADMIN_USERNAME = "administrador";
+const ADMIN_EMAIL = "administrador@pyfestetica.com";
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+/* ---------- Horario del local ---------- */
+const DIAS = [
+  { key: 2, label: "Martes" },
+  { key: 3, label: "Miércoles" },
+  { key: 4, label: "Jueves" },
+  { key: 5, label: "Viernes" },
+  { key: 6, label: "Sábado" },
+];
+const BLOQUES = [
+  { inicio: "08:00", fin: "12:00" },
+  { inicio: "13:00", fin: "20:00" },
+];
+const SLOT_MIN = 30;
+
+function generarSlots() {
+  const slots = [];
+  for (const b of BLOQUES) {
+    let [h, m] = b.inicio.split(":").map(Number);
+    const [hf, mf] = b.fin.split(":").map(Number);
+    while (h < hf || (h === hf && m < mf)) {
+      slots.push(`${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`);
+      m += SLOT_MIN;
+      if (m >= 60) { m -= 60; h += 1; }
+    }
+  }
+  return slots;
+}
+const SLOTS = generarSlots();
+
+function sumarMinutos(hora, minutos) {
+  let [h, m] = hora.split(":").map(Number);
+  m += minutos;
+  h += Math.floor(m / 60);
+  m = m % 60;
+  return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+}
+
+function slotsOcupadosPorTurno(horaInicio, duracionMin) {
+  const cant = Math.ceil(duracionMin / SLOT_MIN);
+  const out = [];
+  let cursor = horaInicio;
+  for (let i = 0; i < cant; i++) {
+    if (SLOTS.includes(cursor)) out.push(cursor);
+    cursor = sumarMinutos(cursor, SLOT_MIN);
+  }
+  return out;
+}
+
+/* ---------- Semana actual ---------- */
+function lunesDeLaSemana(d) {
+  const date = new Date(d);
+  const day = date.getDay(); // 0=Dom .. 6=Sáb
+  const diff = day === 0 ? -6 : 1 - day;
+  date.setDate(date.getDate() + diff);
+  date.setHours(0, 0, 0, 0);
+  return date;
+}
+function fechaISO(d) {
+  const y = d.getFullYear(), m = String(d.getMonth() + 1).padStart(2, "0"), day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+function sumarDias(d, n) {
+  const nd = new Date(d);
+  nd.setDate(nd.getDate() + n);
+  return nd;
+}
+
+let lunesActual = lunesDeLaSemana(new Date());
+let isAdmin = false;
+let unsubDisponibilidad = null;
+let unsubTurnos = null;
+let disponibilidadCache = {}; // fecha_hora -> {ocupado, turnoId}
+let turnosCache = {}; // turnoId -> datos completos (solo si admin)
+
+/* ---------- Render de la grilla ---------- */
+function fechasDeLaSemana() {
+  return DIAS.map((_, i) => sumarDias(lunesActual, i + 1)); // martes..sábado
+}
+
+function renderHeader() {
+  const fechas = fechasDeLaSemana();
+  const head = document.getElementById("agenda-head");
+  head.innerHTML = "<th></th>" + DIAS.map((d, i) => {
+    const f = fechas[i];
+    return `<th>${d.label}<small>${f.getDate()}/${f.getMonth() + 1}</small></th>`;
+  }).join("");
+
+  const primerDia = fechas[0], ultimoDia = fechas[fechas.length - 1];
+  document.getElementById("week-label").textContent =
+    `${primerDia.getDate()}/${primerDia.getMonth() + 1} — ${ultimoDia.getDate()}/${ultimoDia.getMonth() + 1} de ${ultimoDia.toLocaleDateString("es-AR", { month: "long", year: "numeric" })}`;
+}
+
+function renderBody() {
+  const fechas = fechasDeLaSemana();
+  const body = document.getElementById("agenda-body");
+  let rows = "";
+  let prevWasMorning = true;
+  for (const hora of SLOTS) {
+    const esInicioBloque = hora === "08:00" || hora === "13:00";
+    rows += `<tr${esInicioBloque ? ' style="border-top:2px solid var(--border)"' : ''}>`;
+    rows += `<td class="hour-cell">${hora}</td>`;
+    for (const f of fechas) {
+      const fISO = fechaISO(f);
+      const key = `${fISO}_${hora}`;
+      const info = disponibilidadCache[key];
+      const clickable = isAdmin ? "admin-clickable" : "";
+      if (info && info.ocupado) {
+        const turno = turnosCache[info.turnoId];
+        const contenido = isAdmin && turno
+          ? `<span class="who">${escapeHtml(turno.cliente)}</span><span class="svc">${escapeHtml(turno.servicio)}</span>`
+          : `Ocupado`;
+        rows += `<td class="slot busy ${clickable}" data-fecha="${fISO}" data-hora="${hora}" data-turno="${info.turnoId || ''}">${contenido}</td>`;
+      } else {
+        rows += `<td class="slot free ${clickable}" data-fecha="${fISO}" data-hora="${hora}">Libre</td>`;
+      }
+    }
+    rows += `</tr>`;
+  }
+  body.innerHTML = rows;
+
+  body.querySelectorAll("td.slot").forEach(td => {
+    td.addEventListener("click", onSlotClick);
+  });
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+function renderAll() { renderHeader(); renderBody(); }
+
+/* ---------- Suscripciones a Firestore ---------- */
+function suscribirSemana() {
+  if (unsubDisponibilidad) unsubDisponibilidad();
+  if (unsubTurnos) unsubTurnos();
+  disponibilidadCache = {};
+  turnosCache = {};
+
+  const fechas = fechasDeLaSemana();
+  const desde = fechaISO(fechas[0]);
+  const hasta = fechaISO(fechas[fechas.length - 1]);
+
+  const qDisp = query(collection(db, "disponibilidad"), where("fecha", ">=", desde), where("fecha", "<=", hasta));
+  unsubDisponibilidad = onSnapshot(qDisp, snap => {
+    disponibilidadCache = {};
+    snap.forEach(d => {
+      const data = d.data();
+      disponibilidadCache[`${data.fecha}_${data.hora}`] = { ocupado: true, turnoId: data.turnoId };
+    });
+    renderBody();
+  });
+
+  if (isAdmin) {
+    const qTurnos = query(collection(db, "turnos"), where("fecha", ">=", desde), where("fecha", "<=", hasta));
+    unsubTurnos = onSnapshot(qTurnos, snap => {
+      turnosCache = {};
+      snap.forEach(d => { turnosCache[d.id] = { id: d.id, ...d.data() }; });
+      renderBody();
+    });
+  }
+}
+
+/* ---------- Navegación de semana ---------- */
+document.getElementById("prev-week").onclick = () => { lunesActual = sumarDias(lunesActual, -7); renderAll(); suscribirSemana(); };
+document.getElementById("next-week").onclick = () => { lunesActual = sumarDias(lunesActual, 7); renderAll(); suscribirSemana(); };
+document.getElementById("today-btn").onclick = () => { lunesActual = lunesDeLaSemana(new Date()); renderAll(); suscribirSemana(); };
+
+/* ---------- Login / logout ---------- */
+document.getElementById("login-inline").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const errEl = document.getElementById("login-error");
+  errEl.textContent = "";
+  const user = document.getElementById("login-user").value.trim();
+  const pass = document.getElementById("login-pass").value;
+  if (user.toLowerCase() !== ADMIN_USERNAME) {
+    errEl.textContent = "Usuario incorrecto.";
+    return;
+  }
+  try {
+    await signInWithEmailAndPassword(auth, ADMIN_EMAIL, pass);
+  } catch (err) {
+    errEl.textContent = "Usuario o contraseña incorrectos.";
+  }
+});
+
+document.getElementById("logout-btn").onclick = () => signOut(auth);
+
+onAuthStateChanged(auth, (user) => {
+  isAdmin = !!user;
+  document.getElementById("login-inline").style.display = isAdmin ? "none" : "flex";
+  document.getElementById("admin-pill").style.display = isAdmin ? "flex" : "none";
+  suscribirSemana();
+  renderBody();
+});
+
+/* ---------- Click en un slot ---------- */
+let slotSeleccionado = null;
+
+function onSlotClick(e) {
+  if (!isAdmin) return;
+  const td = e.currentTarget;
+  const fecha = td.dataset.fecha, hora = td.dataset.hora, turnoId = td.dataset.turno;
+  if (turnoId) {
+    abrirVista(turnoId);
+  } else {
+    abrirNuevo(fecha, hora);
+  }
+}
+
+function abrirNuevo(fecha, hora) {
+  slotSeleccionado = { fecha, hora };
+  document.getElementById("new-form").reset();
+  document.getElementById("f-duracion").value = "60";
+  document.getElementById("new-error").textContent = "";
+  const [y, m, d] = fecha.split("-");
+  document.getElementById("new-sub").textContent = `${d}/${m}/${y} a las ${hora} hs`;
+  document.getElementById("new-overlay").classList.add("show");
+}
+
+document.getElementById("new-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const errEl = document.getElementById("new-error");
+  errEl.textContent = "";
+  const cliente = document.getElementById("f-cliente").value.trim();
+  const telefono = document.getElementById("f-telefono").value.trim();
+  const servicio = document.getElementById("f-servicio").value.trim();
+  const duracion = parseInt(document.getElementById("f-duracion").value, 10);
+
+  const { fecha, hora } = slotSeleccionado;
+  const slotsNecesarios = slotsOcupadosPorTurno(hora, duracion);
+
+  if (slotsNecesarios.length === 0 || slotsNecesarios.length < Math.ceil(duracion / SLOT_MIN)) {
+    errEl.textContent = "El turno se sale del horario de atención.";
+    return;
+  }
+  const ocupados = slotsNecesarios.filter(h => disponibilidadCache[`${fecha}_${h}`]?.ocupado);
+  if (ocupados.length > 0) {
+    errEl.textContent = "Ese horario se superpone con otro turno ya agendado.";
+    return;
+  }
+
+  try {
+    const batch = writeBatch(db);
+    const turnoRef = doc(collection(db, "turnos"));
+    const horaFin = sumarMinutos(hora, duracion);
+    batch.set(turnoRef, {
+      fecha, horaInicio: hora, horaFin, cliente, telefono, servicio,
+      duracionMinutos: duracion, creado: new Date().toISOString()
+    });
+    for (const h of slotsNecesarios) {
+      const dispRef = doc(db, "disponibilidad", `${fecha}_${h}`);
+      batch.set(dispRef, { fecha, hora: h, ocupado: true, turnoId: turnoRef.id });
+    }
+    await batch.commit();
+    document.getElementById("new-overlay").classList.remove("show");
+  } catch (err) {
+    errEl.textContent = "No se pudo guardar. Probá de nuevo.";
+    console.error(err);
+  }
+});
+
+async function abrirVista(turnoId) {
+  let turno = turnosCache[turnoId];
+  if (!turno) {
+    // fallback por si todavía no llegó por el listener
+    const snap = await getDocs(query(collection(db, "turnos"), where("__name__", "==", turnoId)));
+    snap.forEach(d => turno = { id: d.id, ...d.data() });
+  }
+  if (!turno) return;
+  document.getElementById("view-cliente").textContent = turno.cliente;
+  const [y, m, d] = turno.fecha.split("-");
+  document.getElementById("view-sub").textContent = `${d}/${m}/${y} · ${turno.horaInicio} a ${turno.horaFin} hs`;
+  document.getElementById("view-servicio").textContent = turno.servicio;
+  document.getElementById("view-telefono").textContent = turno.telefono;
+  document.getElementById("delete-btn").dataset.turno = turno.id;
+  document.getElementById("view-overlay").classList.add("show");
+}
+
+document.getElementById("delete-btn").addEventListener("click", async (e) => {
+  const turnoId = e.currentTarget.dataset.turno;
+  const turno = turnosCache[turnoId];
+  if (!turno) return;
+  if (!confirm(`¿Eliminar el turno de ${turno.cliente}?`)) return;
+  try {
+    const slots = slotsOcupadosPorTurno(turno.horaInicio, turno.duracionMinutos);
+    const batch = writeBatch(db);
+    batch.delete(doc(db, "turnos", turnoId));
+    for (const h of slots) {
+      batch.delete(doc(db, "disponibilidad", `${turno.fecha}_${h}`));
+    }
+    await batch.commit();
+    document.getElementById("view-overlay").classList.remove("show");
+  } catch (err) {
+    console.error(err);
+    alert("No se pudo eliminar el turno.");
+  }
+});
+
+document.querySelectorAll("[data-close]").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.getElementById("new-overlay").classList.remove("show");
+    document.getElementById("view-overlay").classList.remove("show");
+  });
+});
+
+/* ---------- Arranque ---------- */
+renderAll();
+suscribirSemana();
+</script>
+</body>
+</html>
