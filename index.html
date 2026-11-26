@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>PYF Estética · Reservá tu turno</title>
-<meta name="description" content="PYF Estética. Reservá tu turno online desde el celular: elegí el servicio, el día y el horario disponible.">
+<title>PYF Estética · Manicuría y pedicuría en Tortuguitas</title>
+<meta name="description" content="PYF Estética, manicuría y pedicuría con Fatima Mailin en Tortuguitas. Reservá tu turno online desde el celular: elegí el servicio, el día y el horario disponible.">
 <meta name="theme-color" content="#f7ece8">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -92,7 +92,9 @@ button{font:inherit;cursor:pointer}
 .step.locked{opacity:.45;pointer-events:none}
 
 /* services */
-.svc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.svc-hint{font-size:13.5px;color:var(--muted);margin:10px 0 0}
+@media(max-width:420px){.svc{flex-direction:column;align-items:flex-start;gap:10px}}
 .svc{display:flex;align-items:center;gap:14px;text-align:left;background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:14px;transition:border-color .15s,background .15s}
 .svc:hover{border-color:var(--blush-2)}
 .svc .ico{width:46px;height:46px;flex:0 0 46px;border-radius:14px;background:var(--blush);display:grid;place-items:center;color:var(--rose)}
@@ -187,6 +189,39 @@ footer .copy{width:100%;font-size:13px;color:#d8aea8}
 @media(min-width:761px){.dock{left:auto;right:24px;bottom:24px}.dock .cta{display:none}}
 
 .demo{background:#fff6dc;border:1px dashed var(--gold);color:#7a5a1f;font-size:13px;border-radius:12px;padding:10px 14px;margin:0 22px 6px}
+
+/* promo fiestas/verano */
+.promo{padding:14px 16px 0}
+.promo-in{position:relative;overflow:hidden;max-width:1048px;margin:0 auto;border-radius:24px;padding:22px 20px;color:#fff;
+  background:radial-gradient(120% 140% at 100% 0%,#f6b98b 0,transparent 45%),radial-gradient(90% 120% at 0% 100%,#d8435b 0,transparent 55%),linear-gradient(135deg,#9e2238 0%,#c23a4f 50%,#e0745a 100%);
+  box-shadow:0 14px 34px rgba(158,34,56,.32);display:flex;align-items:center;gap:18px}
+.promo-in::before{content:"";position:absolute;right:-60px;top:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,#ffd98a 0,#ffb347 40%,transparent 70%);opacity:.55}
+.promo-txt{position:relative;flex:1;display:flex;flex-direction:column;gap:6px}
+.promo-tag{align-self:flex-start;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);padding:5px 11px;border-radius:999px}
+.promo strong{font-family:Fraunces,serif;font-weight:600;font-size:clamp(23px,5.6vw,32px);line-height:1.1}
+.promo strong em{color:#ffe2a8}
+.promo-sub{font-size:14.5px;opacity:.92}
+.promo-btn{position:relative;flex:0 0 auto;background:#fff;color:#9e2238;text-decoration:none;font-weight:700;font-size:15.5px;padding:14px 20px;border-radius:999px;box-shadow:0 8px 20px rgba(0,0,0,.18);animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+.sparks i{position:absolute;width:6px;height:6px;border-radius:50%;background:#ffe2a8;opacity:.0;animation:tw 3s ease-in-out infinite}
+.sparks i:nth-child(1){left:8%;top:18%;animation-delay:0s}
+.sparks i:nth-child(2){left:30%;top:78%;animation-delay:.6s;background:#fff}
+.sparks i:nth-child(3){left:55%;top:12%;animation-delay:1.2s}
+.sparks i:nth-child(4){left:72%;top:70%;animation-delay:1.8s;background:#fff}
+.sparks i:nth-child(5){left:88%;top:30%;animation-delay:.3s}
+.sparks i:nth-child(6){left:18%;top:52%;animation-delay:2.1s;width:4px;height:4px}
+.sparks i:nth-child(7){left:44%;top:45%;animation-delay:1.5s;width:4px;height:4px;background:#fff}
+.sparks i:nth-child(8){left:94%;top:82%;animation-delay:.9s}
+@keyframes tw{0%,100%{opacity:0;transform:scale(.4)}50%{opacity:1;transform:scale(1.2)}}
+@media(prefers-reduced-motion:reduce){.promo-btn,.sparks i{animation:none}.sparks i{opacity:.6}}
+@media(max-width:760px){.promo-in{flex-direction:column;align-items:stretch;padding:20px 18px}.promo-btn{text-align:center}}
+
+.lead{color:var(--muted);margin:8px 0 0;font-size:15.5px}
+.gallery{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;gap:10px;height:420px}
+.g{margin:0;border-radius:20px;background:linear-gradient(160deg,#f3d9d1,#e3b3ab);display:grid;place-items:center;color:rgba(90,42,51,.55);font-size:13px;overflow:hidden}
+.g img{width:100%;height:100%;object-fit:cover}
+.g.big{grid-row:span 2}
+@media(max-width:760px){.gallery{height:auto;grid-template-columns:1fr 1fr;grid-template-rows:none}.g{aspect-ratio:1}.g.big{grid-column:span 2;grid-row:auto;aspect-ratio:4/3}}
 </style>
 </head>
 <body>
@@ -195,30 +230,43 @@ footer .copy{width:100%;font-size:13px;color:#d8aea8}
   <div class="wrap">
     <a href="#" class="brand" aria-label="PYF Estética, inicio">
       <span class="mono">PYF</span>
-      <span><b>PYF Estética</b><small>Centro de estética</small></span>
+      <span><b>PYF Estética</b><small>Manos y pies</small></span>
     </a>
     <nav class="nav">
       <a href="#servicios">Servicios</a>
       <a href="#como">Cómo reservar</a>
+      <a href="#local">El local</a>
       <a href="#visitanos">Horarios</a>
     </nav>
     <a href="#agenda" class="pill">Reservar</a>
   </div>
 </header>
 
+<div class="promo" id="promo">
+  <div class="promo-in">
+    <span class="sparks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+    <div class="promo-txt">
+      <span class="promo-tag">🎄 Fiestas &amp; verano ☀️</span>
+      <strong>Llegá a las fiestas con manos y pies <em>impecables</em></strong>
+      <span class="promo-sub">Los turnos de diciembre vuelan. Reservá manicuría + pedicuría juntas en un solo turno.</span>
+    </div>
+    <a href="#agenda" class="promo-btn" data-combo>Reservar manos y pies</a>
+  </div>
+</div>
+
 <section class="hero">
   <div class="wrap">
     <div>
       <span class="eyebrow"><i></i>Agenda online abierta</span>
-      <h1>Tu momento,<br><em>a un toque.</em></h1>
-      <p>Elegí el servicio, el día y el horario que te quede cómodo. Reservás en un minuto desde el celular y te confirmamos por WhatsApp.</p>
+      <h1>Manos y pies,<br><em>a un toque.</em></h1>
+      <p>Manicuría y pedicuría con Fatima Mailin. Elegí el servicio, el día y el horario que te quede cómodo. Reservás en un minuto desde el celular y te confirmamos por WhatsApp.</p>
       <a href="#agenda" class="cta">
         Reservá tu turno
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>
       <div class="meta">
         <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Mar a sáb · 8 a 20 h</span>
-        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>Ubicación a confirmar</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>El Salvador 1363, Tortuguitas</span>
       </div>
     </div>
     <div class="hero-art" aria-hidden="true">
@@ -247,6 +295,7 @@ footer .copy{width:100%;font-size:13px;color:#d8aea8}
         <div class="step" id="s1">
           <div class="step-title"><span class="n">1</span><h3>¿Qué te querés hacer?</h3><span class="pick" id="pick1"></span></div>
           <div class="svc-grid" id="svc-grid"></div>
+          <p class="svc-hint">Podés elegir uno o los dos: manos y pies en el mismo turno.</p>
         </div>
 
         <div class="step locked" id="s2">
@@ -285,7 +334,7 @@ footer .copy{width:100%;font-size:13px;color:#d8aea8}
 
 <section class="block" id="servicios">
   <div class="wrap">
-    <div class="sec-head"><span class="eyebrow">Servicios</span><h2>Lo que hacemos</h2></div>
+    <div class="sec-head"><span class="eyebrow">Servicios</span><h2>Lo que hacemos</h2><p class="lead">Te atiende Fatima Mailin, con turnos de martes a sábado.</p></div>
     <div class="list" id="svc-list"></div>
   </div>
 </section>
@@ -297,6 +346,17 @@ footer .copy{width:100%;font-size:13px;color:#d8aea8}
       <div><b>Elegí el servicio</b><p>Cada uno muestra cuánto dura, así la agenda te ofrece solo horarios donde entra.</p></div>
       <div><b>Elegí día y hora</b><p>Ves en el momento qué turnos están libres. Lo ocupado aparece tachado.</p></div>
       <div><b>Confirmá</b><p>Dejás tu nombre y WhatsApp. Nos llega el aviso y te confirmamos.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="local" style="padding-top:10px">
+  <div class="wrap">
+    <div class="sec-head"><span class="eyebrow">Nuestro local</span><h2>Te esperamos en Tortuguitas</h2><p class="lead">Un espacio tranquilo para que te relajes mientras te atendemos.</p></div>
+    <div class="gallery">
+      <figure class="g big"><span>Foto del local</span></figure>
+      <figure class="g"><span>Foto</span></figure>
+      <figure class="g"><span>Foto</span></figure>
     </div>
   </div>
 </section>
@@ -319,8 +379,8 @@ footer .copy{width:100%;font-size:13px;color:#d8aea8}
         <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
         <div>
           <h3>Dónde estamos</h3>
-          <p>Dirección a confirmar</p>
-          <a class="go" href="#">Cómo llegar →</a>
+          <p>El Salvador 1363<br>Tortuguitas, Buenos Aires</p>
+          <a class="go" href="https://www.google.com/maps/search/?api=1&query=El+Salvador+1363%2C+Tortuguitas%2C+Buenos+Aires" target="_blank" rel="noopener">Cómo llegar →</a>
         </div>
       </div>
     </div>
@@ -329,7 +389,7 @@ footer .copy{width:100%;font-size:13px;color:#d8aea8}
 
 <footer>
   <div class="wrap">
-    <a href="#" class="brand"><span class="mono">PYF</span><span><b>PYF Estética</b><small>Centro de estética</small></span></a>
+    <a href="#" class="brand"><span class="mono">PYF</span><span><b>PYF Estética</b><small>Manos y pies</small></span></a>
     <div class="soc">
       <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".9" fill="currentColor"/></svg></a>
       <a href="#" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-3.3-.8-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .5l-.3.5-.4.5c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l2 1c.3.1.5.2.5.3.1.1.1.7-.1 1.3z"/></svg></a>
@@ -354,12 +414,8 @@ const ICONS = {
   comb:'<rect x="3" y="4" width="18" height="5" rx="1.5"/><path d="M5 9v10M8 9v8M11 9v10M14 9v8M17 9v10M20 9v8"/>'
 };
 const SERVICIOS = [
-  {id:"mani", nombre:"Manicuría", dur:60, desc:"Esmaltado semipermanente, kapping o tradicional.", ico:"hand"},
-  {id:"pedi", nombre:"Pedicuría", dur:60, desc:"Limpieza, limado y esmaltado de pies.", ico:"foot"},
-  {id:"depi", nombre:"Depilación", dur:30, desc:"Por zona. Consultá por combos.", ico:"sparkle"},
-  {id:"facial", nombre:"Limpieza facial", dur:90, desc:"Limpieza profunda e hidratación según tu piel.", ico:"face"},
-  {id:"masaje", nombre:"Masajes", dur:60, desc:"Descontracturantes y relajantes.", ico:"leaf"},
-  {id:"peinado", nombre:"Peinado", dur:45, desc:"Brushing, ondas y peinados para eventos.", ico:"comb"}
+  {id:"mani", nombre:"Manicuría", dur:60, desc:"Esmaltado semipermanente, kapping o tradicional. Manos prolijas y que duran.", ico:"hand"},
+  {id:"pedi", nombre:"Pedicuría", dur:60, desc:"Limpieza, limado y esmaltado. Pies listos para las sandalias.", ico:"foot"}
 ];
 const BLOQUES = [["08:00","12:00","Mañana"],["13:00","20:00","Tarde"]];
 const DIAS_ABIERTO = [2,3,4,5,6]; // mar a sáb
@@ -396,11 +452,17 @@ function libresDelDia(fecha,dur){
   return out;
 }
 
-const state={svc:null,fecha:null,hora:null};
+const state={sel:new Set(),svc:null,fecha:null,hora:null};
+function setSel(ids){
+  state.sel=new Set(ids);
+  const list=SERVICIOS.filter(s=>state.sel.has(s.id));
+  state.svc=list.length?{nombre:list.map(s=>s.nombre).join(" + "),dur:list.reduce((a,s)=>a+s.dur,0)}:null;
+  state.fecha=null;state.hora=null;
+}
 
 function render(){
   // servicios
-  $("#svc-grid").innerHTML=SERVICIOS.map(s=>`<button type="button" class="svc" data-id="${s.id}" aria-pressed="${state.svc?.id===s.id}"><span class="ico">${svg(s.ico)}</span><span><b>${s.nombre}</b><small>${fmtDur(s.dur)}</small></span></button>`).join("");
+  $("#svc-grid").innerHTML=SERVICIOS.map(s=>`<button type="button" class="svc" data-id="${s.id}" aria-pressed="${state.sel.has(s.id)}"><span class="ico">${svg(s.ico)}</span><span><b>${s.nombre}</b><small>${fmtDur(s.dur)}</small></span></button>`).join("");
   $("#pick1").textContent=state.svc?state.svc.nombre:"";
   // fechas
   const s2=$("#s2"), s3=$("#s3"), s4=$("#s4");
@@ -443,7 +505,8 @@ function validar(){
 }
 function go(el){setTimeout(()=>el.scrollIntoView({behavior:"smooth",block:"start"}),60)}
 
-$("#svc-grid").addEventListener("click",e=>{const b=e.target.closest(".svc");if(!b)return;state.svc=SERVICIOS.find(s=>s.id===b.dataset.id);state.fecha=null;state.hora=null;render();go($("#s2"))});
+$("#svc-grid").addEventListener("click",e=>{const b=e.target.closest(".svc");if(!b)return;const n=new Set(state.sel);n.has(b.dataset.id)?n.delete(b.dataset.id):n.add(b.dataset.id);setSel([...n]);render()});
+document.querySelectorAll("[data-combo]").forEach(a=>a.addEventListener("click",e=>{e.preventDefault();setSel(["mani","pedi"]);render();go($("#s2"))}));
 $("#dates").addEventListener("click",e=>{const b=e.target.closest(".day");if(!b||b.disabled)return;state.fecha=b.dataset.f;state.hora=null;render();go($("#s3"))});
 $("#times").addEventListener("click",e=>{const b=e.target.closest(".t");if(!b||b.disabled)return;state.hora=b.dataset.h;render();go($("#s4"))});
 $("#form").addEventListener("input",validar);
@@ -453,11 +516,11 @@ $("#form").addEventListener("submit",e=>{
   $("#ok-text").innerHTML=`${$("#nombre").value.split(" ")[0]}, reservaste <b>${state.svc.nombre}</b> para el ${$("#pick2").textContent} a las ${state.hora} h. Te escribimos por WhatsApp para confirmarlo.`;
   $("#ok").style.display="block"; go($("#agenda"));
 });
-$("#again").addEventListener("click",()=>{state.svc=state.fecha=state.hora=null;$("#form").reset();$("#ok").style.display="none";$("#flow").style.display="";$(".demo").style.display="";$(".book-head").style.display="";render();go($("#agenda"))});
+$("#again").addEventListener("click",()=>{setSel([]);$("#form").reset();$("#ok").style.display="none";$("#flow").style.display="";$(".demo").style.display="";$(".book-head").style.display="";render();go($("#agenda"))});
 
 // lista de servicios
 $("#svc-list").innerHTML=SERVICIOS.map(s=>`<div class="item"><span class="ico">${svg(s.ico)}</span><h3>${s.nombre}</h3><p>${s.desc}</p><a class="go" href="#agenda" data-svc="${s.id}">Reservar · ${fmtDur(s.dur)} →</a></div>`).join("");
-$("#svc-list").addEventListener("click",e=>{const a=e.target.closest("[data-svc]");if(!a)return;e.preventDefault();state.svc=SERVICIOS.find(s=>s.id===a.dataset.svc);state.fecha=state.hora=null;render();go($("#s2"))});
+$("#svc-list").addEventListener("click",e=>{const a=e.target.closest("[data-svc]");if(!a)return;e.preventDefault();setSel([a.dataset.svc]);render();go($("#s2"))});
 
 // próximo turno libre
 (function(){const d=new Date();d.setHours(0,0,0,0);for(let i=0;i<14;i++){const x=new Date(d);x.setDate(d.getDate()+i);if(!DIAS_ABIERTO.includes(x.getDay()))continue;for(const g of libresDelDia(iso(x),60)){const s=g.slots.find(s=>s.libre);if(s){$("#next-free").textContent=x.toLocaleDateString("es-AR",{weekday:"long"})+" "+s.h+" h";return}}}})();
