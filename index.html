@@ -333,6 +333,16 @@ footer .copy,footer .copy a{color:#9a8f7c !important}
 .sub{list-style:none;padding:0;margin:12px 0 0;border-top:1px solid var(--line)}
 .sub li{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:14.5px}
 .sub em{font-style:normal;color:var(--rose-dark);font-weight:600;white-space:nowrap}
+
+/* barra "seguir" al elegir servicio */
+.next-bar{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:31;max-width:620px;margin:0 auto;display:flex;align-items:center;gap:12px;background:var(--black);color:#efe6d4;border:1px solid rgba(201,162,74,.5);border-radius:20px;padding:10px 10px 10px 16px;box-shadow:0 16px 40px rgba(0,0,0,.35);transform:translateY(140%);opacity:0;transition:transform .25s,opacity .25s;pointer-events:none}
+.next-bar.show{transform:none;opacity:1;pointer-events:auto}
+.nb-txt{flex:1;min-width:0}
+.nb-txt small{display:block;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#b9a888}
+.nb-txt b{display:block;font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#f4e3b5}
+#nb-go{flex:0 0 auto;border:0;border-radius:999px;background:var(--gold-grad);color:var(--black);font-family:Cinzel,serif;font-weight:700;font-size:13px;letter-spacing:.5px;padding:13px 16px}
+#nb-go span{display:inline-block;animation:bob 1.4s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}
 </style>
 </head>
 <body>
@@ -406,7 +416,7 @@ footer .copy,footer .copy a{color:#9a8f7c !important}
       <div id="flow">
         <div class="step" id="s1">
           <div class="step-title"><span class="n">1</span><h3>¿Qué te querés hacer?</h3><span class="pick" id="pick1"></span></div>
-          <p class="svc-hint" style="margin:-4px 0 14px">Elegí un servicio de manos, uno de pies, o uno de cada uno para hacerte los dos en el mismo turno.</p>
+          <p class="svc-hint" style="margin:-4px 0 14px">Elegí un servicio de <b>manos</b>, uno de <b>pies</b>, o uno de cada uno para hacerte los dos en el mismo turno. Después <b>bajá para elegir el día y el horario</b> 👇</p>
           <div class="svc-grid" id="svc-grid"></div>
         </div>
 
@@ -526,6 +536,10 @@ footer .copy,footer .copy a{color:#9a8f7c !important}
   </div>
 </footer>
 
+<div class="next-bar" id="next-bar" aria-live="polite">
+  <div class="nb-txt"><small>Elegiste</small><b id="nb-svc">—</b></div>
+  <button type="button" id="nb-go">Elegir día y hora <span aria-hidden="true">↓</span></button>
+</div>
 <div class="dock" id="dock">
   <a href="#agenda" class="cta">Reservá tu turno</a>
   <a href="https://wa.me/5491133777344?text=Hola%2C%20quer%C3%ADa%20consultar%20por%20un%20turno" target="_blank" rel="noopener" class="wa" aria-label="Escribinos por WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-3.3-.8-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .5l-.3.5-.4.5c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l2 1c.3.1.5.2.5.3.1.1.1.7-.1 1.3z"/></svg></a>
@@ -606,6 +620,8 @@ function render(){
   // servicios
   $("#svc-grid").innerHTML=GRUPOS.map(g=>`<div class="grp" id="grp-${g.cat}"><h4><span class="ico">${svg(g.ico)}</span>${g.titulo}</h4>${SERVICIOS.filter(s=>s.cat===g.cat).map(s=>`<button type="button" class="opt" data-id="${s.id}" aria-pressed="${state.sel.has(s.id)}"><span class="chk" aria-hidden="true"></span><span class="t1"><b>${s.nombre}</b><small>${s.desc}</small></span><span class="dur">${fmtDur(s.dur)}</span></button>`).join("")}</div>`).join("");
   $("#pick1").textContent=state.svc?state.svc.nombre:"";
+  if (state.svc) $("#nb-svc").textContent = state.svc.nombre+" · "+fmtDur(state.svc.dur);
+  if (typeof onScroll==="function") setTimeout(onScroll,0);
   // fechas
   const s2=$("#s2"), s3=$("#s3"), s4=$("#s4");
   s2.classList.toggle("locked",!state.svc);
@@ -703,7 +719,12 @@ function onScroll(){
   $("#top").classList.toggle("scrolled",scrollY>8);
   const r=card.getBoundingClientRect();
   dock.classList.toggle("hide", r.top<innerHeight*.6 && r.bottom>innerHeight*.3);
+  const s2=$("#s2").getBoundingClientRect(), s1=$("#s1").getBoundingClientRect();
+  const show = !!state.svc && !state.fecha && s1.top<innerHeight && s2.top>innerHeight*.75;
+  $("#next-bar").classList.toggle("show", show);
+  if (show) dock.classList.add("hide");
 }
+$("#nb-go").addEventListener("click",()=>{ $("#next-bar").classList.remove("show"); go($("#s2")); });
 addEventListener("scroll",onScroll,{passive:true});
 $("#yr").textContent=new Date().getFullYear();
 render(); onScroll();
