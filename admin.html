@@ -340,7 +340,7 @@ function renderHello(){
   $("#pend-note").hidden = !pend.length;
   $("#pend-note").textContent = `${pend.length} turno${pend.length>1?"s":""} de la web sin confirmar`;
   const hoyT = delDia(iso(hoy)).filter(t=>t.servicio!=="Bloqueado");
-  if (!DIAS_ABIERTO.includes(hoy.getDay())) { $("#hello-sub").textContent = "Hoy el local está cerrado."; return; }
+  if (!DIAS_ABIERTO.includes(hoy.getDay())) { $("#hello-sub").textContent = "Hoy no tenés turnos (domingos y lunes no atendés)."; return; }
   if (!hoyT.length) { $("#hello-sub").textContent = "Hoy no tenés turnos cargados."; return; }
   const ahora = new Date().getHours()*60+new Date().getMinutes();
   const prox = hoyT.find(t => toMin(t.horaFin||t.horaInicio) > ahora);
@@ -370,7 +370,7 @@ function renderDay(){
   const reales = list.filter(t=>t.servicio!=="Bloqueado");
   $("#day-sub").textContent = !abierto ? "Cerrado" : reales.length ? `${reales.length} turno${reales.length>1?"s":""}` : "Sin turnos";
   let html = "";
-  if (!abierto && !list.length) html = `<div class="closed-msg">Domingos y lunes el local está cerrado.</div>`;
+  if (!abierto && !list.length) html = `<div class="closed-msg">Domingos y lunes no hay turnos de manos y pies.</div>`;
   else if (!list.length) html = `<div class="empty"><b>Día libre</b>No hay turnos reservados para este día.</div>`;
   else html = `<div class="list">` + list.map(t => {
     const blk = t.servicio==="Bloqueado";
