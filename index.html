@@ -693,9 +693,12 @@ $("#form").addEventListener("submit",async e=>{
     const j=await r.json().catch(()=>({}));
     if(!r.ok||j.success==="false"||j.success===false) throw new Error(j.message||r.status);
   }catch(err){
+    console.warn("mail",err);
+    if(!enAgenda){
     btn.disabled=false; btn.textContent="Confirmar reserva";
     alertBox(`No pudimos enviar la reserva. Probá de nuevo o escribinos por <a href="https://wa.me/5491133777344" target="_blank" rel="noopener">WhatsApp</a>.`);
     return;
+    }
   }
   btn.textContent="Confirmar reserva";
   $("#flow").style.display="none"; $(".book-head").style.display="none";
