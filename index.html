@@ -343,6 +343,15 @@ footer .copy,footer .copy a{color:#9a8f7c !important}
 #nb-go{flex:0 0 auto;border:0;border-radius:999px;background:var(--gold-grad);color:var(--black);font-family:Cinzel,serif;font-weight:700;font-size:13px;letter-spacing:.5px;padding:13px 16px}
 #nb-go span{display:inline-block;animation:bob 1.4s ease-in-out infinite}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}
+
+.policy{display:grid;gap:8px;margin:14px 0 4px;background:#fbf6ea;border:1px solid var(--blush-2);border-radius:14px;padding:12px 14px}
+.policy div{display:flex;gap:10px;align-items:flex-start}
+.policy .pi{flex:0 0 26px;height:26px;border-radius:50%;background:var(--black);color:#ecd08b;display:grid;place-items:center;font-size:13px}
+.policy p{margin:0;font-size:14px;line-height:1.45;color:var(--ink)}
+.note a{color:var(--rose-dark);font-weight:600}
+.wa-help{display:flex;align-items:center;justify-content:center;gap:10px;max-width:440px;margin:0 auto 12px;height:50px;border-radius:999px;background:#25d366;color:#fff;text-decoration:none;font-weight:600}
+.wa-help svg{width:22px;height:22px}
+.ok-box .cta{background:transparent !important;border:1.5px solid var(--gold) !important;box-shadow:none !important}
 </style>
 </head>
 <body>
@@ -438,8 +447,13 @@ footer .copy,footer .copy a{color:#9a8f7c !important}
             <div class="f"><label for="tel">WhatsApp</label><input id="tel" type="tel" inputmode="tel" autocomplete="tel" required placeholder="Ej: 11 2345-6789"></div>
             <div class="f"><label for="obs">¿Algo que debamos saber? <span style="color:var(--muted);font-weight:400">(opcional)</span></label><textarea id="obs" rows="2" placeholder="Ej: es mi primera vez"></textarea></div>
             <div class="summary" id="summary"></div>
+            <div class="policy">
+              <div><span class="pi">⏱</span><p><b>10 minutos de tolerancia.</b> Pasado ese tiempo el turno se cancela y queda libre para otra clienta.</p></div>
+              <div><span class="pi">↺</span><p>Si no podés venir, avisanos con <b>24 h de anticipación</b>.</p></div>
+            </div>
             <button class="cta confirm" id="confirm" type="submit" disabled>Confirmar reserva</button>
-            <p class="note">Te llega la confirmación por WhatsApp. Si no podés venir, avisanos con 24 h de anticipación.</p>
+            
+            <p class="note">Te confirmamos el turno por WhatsApp. ¿Dudas o consultas? <a href="https://wa.me/5491133777344?text=Hola%2C%20tengo%20una%20consulta%20sobre%20mi%20turno" target="_blank" rel="noopener">Escribinos por WhatsApp</a>.</p>
           </form>
         </div>
       </div>
@@ -448,6 +462,11 @@ footer .copy,footer .copy a{color:#9a8f7c !important}
         <div class="big"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></div>
         <h3>¡Listo, te esperamos!</h3>
         <p id="ok-text"></p>
+        <div class="policy" style="text-align:left;max-width:440px;margin:0 auto 16px">
+          <div><span class="pi">⏱</span><p><b>Te pedimos puntualidad:</b> hay 10 minutos de tolerancia. Pasado ese tiempo el turno se cancela.</p></div>
+          <div><span class="pi">↺</span><p>Si no podés venir, avisanos con 24 h de anticipación.</p></div>
+        </div>
+        <a class="wa-help" href="https://wa.me/5491133777344?text=Hola%2C%20tengo%20una%20consulta%20sobre%20mi%20turno" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-3.3-.8-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .5l-.3.5-.4.5c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l2 1c.3.1.5.2.5.3.1.1.1.7-.1 1.3z"/></svg>¿Dudas o consultas? Escribinos</a>
         <button class="cta" id="again" type="button">Reservar otro turno</button>
       </div>
     </div>

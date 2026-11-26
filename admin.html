@@ -423,7 +423,7 @@ function verTurno(id){
   $("#v-cliente").textContent = blk ? "Horario bloqueado" : t.cliente;
   $("#v-sub").textContent = cap(largo(t.fecha)) + ` · ${t.horaInicio} a ${t.horaFin} h`;
   $("#v-quick").hidden = blk || !t.telefono;
-  const msgConf = `¡Hola ${String(t.cliente).split(" ")[0]}! Tu turno de ${t.servicio} en P&F Estética quedó confirmado para el ${largo(t.fecha)} a las ${t.horaInicio} h. Te esperamos en El Salvador 1363, Tortuguitas. Si no podés venir, avisanos con anticipación. ¡Gracias!`;
+  const msgConf = `¡Hola ${String(t.cliente).split(" ")[0]}! Tu turno de ${t.servicio} en P&F Estética quedó confirmado para el ${largo(t.fecha)} a las ${t.horaInicio} h. Te esperamos en El Salvador 1363, Tortuguitas.\n\n⏱ Te pedimos puntualidad: hay 10 minutos de tolerancia; pasado ese tiempo el turno se cancela.\nSi no podés venir, avisanos con 24 h de anticipación.\n\nCualquier consulta o duda, escribinos por acá. ¡Gracias!`;
   const pend = esPend(t);
   $("#v-confirm").hidden = !(pend && t.telefono);
   $("#v-confok").hidden = !(t.estado==="confirmado");
