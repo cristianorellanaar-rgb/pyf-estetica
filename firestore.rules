@@ -3,7 +3,7 @@ service cloud.firestore {
   match /databases/{database}/documents {
 
     function isAdmin() {
-      return request.auth != null && request.auth.uid == 'ADMIN_UID';
+      return request.auth != null && request.auth.uid == 'JSIJfHqF5bfx9l0CZFfEJkNJP6b2';
     }
 
     // Turnos: solo la administradora los lee y modifica.
