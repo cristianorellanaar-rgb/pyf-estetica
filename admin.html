@@ -84,7 +84,7 @@ h1,h2,h3{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;margin:0
 
 /* día */
 .day-head{display:flex;align-items:flex-end;gap:10px;margin:22px 0 10px}
-.day-head h2{font-size:28px;flex:1;text-transform:capitalize}
+.day-head h2{font-size:28px;flex:1}
 .day-head small{display:block;font-family:Jost,sans-serif;font-size:14px;color:var(--muted);font-weight:400;text-transform:none;margin-top:4px}
 .closed-msg,.empty{background:var(--paper);border:1px dashed var(--champ-2);border-radius:16px;padding:22px;text-align:center;color:var(--muted)}
 .empty b{display:block;font-family:"Cormorant Garamond",serif;font-size:22px;color:var(--ink);margin-bottom:4px}
@@ -100,6 +100,14 @@ h1,h2,h3{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;margin:0
 .tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;border-radius:6px;margin-left:6px;vertical-align:2px}
 .tag.web{background:#e7f0e6;color:var(--ok)}
 .tag.blk{background:#eee;color:#666}
+.tag.pend{background:#fbecc8;color:#8a5a00}
+.tag.conf{background:#e7f0e6;color:var(--ok)}
+.turno.pend{border-color:#e9c46a;box-shadow:0 0 0 2px rgba(233,196,106,.35)}
+.d .c.pend{box-shadow:0 0 0 2px #fff,0 0 0 3.5px #d98b00}
+.btn-confirm{display:flex;align-items:center;justify-content:center;gap:10px;height:56px;border-radius:999px;background:#25d366;color:#fff;text-decoration:none;font-weight:700;font-size:16px;margin-bottom:10px;box-shadow:0 10px 24px rgba(37,211,102,.3)}
+.btn-confirm svg{width:22px;height:22px}
+.conf-ok{display:flex;align-items:center;gap:8px;background:#e7f0e6;color:var(--ok);border-radius:14px;padding:10px 14px;font-weight:600;font-size:14.5px;margin-bottom:10px}
+.hello .pend-note{display:inline-block;margin-top:8px;background:#fbecc8;color:#8a5a00;border-radius:999px;padding:4px 12px;font-size:13.5px;font-weight:600}
 .turno.blocked{background:repeating-linear-gradient(135deg,#faf7f1 0 8px,#f2ece1 8px 16px)}
 .libres{margin-top:16px;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:12px 14px}
 .libres h3{font-family:Jost,sans-serif;font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px}
@@ -175,6 +183,7 @@ h1,h2,h3{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;margin:0
     <div class="hello">
       <h1 id="hello-title">Hola, Fátima</h1>
       <p id="hello-sub">Cargando turnos…</p>
+      <span class="pend-note" id="pend-note" hidden></span>
     </div>
 
     <section class="cal" aria-label="Calendario del mes">
@@ -205,6 +214,8 @@ h1,h2,h3{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;margin:0
   <div class="grab"></div>
   <h2 id="v-cliente">—</h2>
   <p class="sub" id="v-sub">—</p>
+  <a class="btn-confirm" id="v-confirm" target="_blank" rel="noopener" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>Confirmar y avisar por WhatsApp</a>
+  <div class="conf-ok" id="v-confok" hidden>✓ Turno confirmado</div>
   <div class="quick" id="v-quick">
     <a class="wa" id="v-wa" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-3.3-.8-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .5l-.3.5-.4.5c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l2 1c.3.1.5.2.5.3.1.1.1.7-.1 1.3z"/></svg>WhatsApp</a>
     <a class="tel" id="v-tel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>Llamar</a>
@@ -255,7 +266,7 @@ h1,h2,h3{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;margin:0
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
-import { getFirestore, collection, query, where, onSnapshot, doc, writeBatch } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+import { getFirestore, collection, query, where, onSnapshot, doc, writeBatch, updateDoc } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -315,6 +326,7 @@ function suscribir(){
     render();
   }, err => { console.error(err); $("#day-body").innerHTML = `<div class="empty"><b>No se pudieron cargar los turnos</b>Revisá la conexión y volvé a entrar.</div>`; });
 }
+const esPend = t => t.servicio!=="Bloqueado" && t.origen==="web" && t.estado!=="confirmado";
 const delDia = f => Object.values(turnos).filter(t => t.fecha===f).sort((a,b)=>a.horaInicio.localeCompare(b.horaInicio));
 const ocupadosDia = f => { const s=new Set(); delDia(f).forEach(t => slotsDe(t.horaInicio, t.duracionMinutos||60).forEach(h=>s.add(h))); return s; };
 
@@ -324,6 +336,9 @@ function render(){ renderHello(); renderCal(); renderDay(); }
 function renderHello(){
   const h = new Date().getHours();
   $("#hello-title").textContent = (h<12?"Buen día":h<20?"Buenas tardes":"Buenas noches")+", Fátima";
+  const pend = Object.values(turnos).filter(t => esPend(t) && t.fecha>=iso(hoy));
+  $("#pend-note").hidden = !pend.length;
+  $("#pend-note").textContent = `${pend.length} turno${pend.length>1?"s":""} de la web sin confirmar`;
   const hoyT = delDia(iso(hoy)).filter(t=>t.servicio!=="Bloqueado");
   if (!DIAS_ABIERTO.includes(hoy.getDay())) { $("#hello-sub").textContent = "Hoy el local está cerrado."; return; }
   if (!hoyT.length) { $("#hello-sub").textContent = "Hoy no tenés turnos cargados."; return; }
@@ -343,7 +358,7 @@ function renderCal(){
     const f = iso(d), list = delDia(f).filter(t=>t.servicio!=="Bloqueado");
     const lleno = DIAS_ABIERTO.includes(d.getDay()) && ocupadosDia(f).size >= SLOTS.length;
     const cls = ["d", d.getMonth()!==mes.getMonth()?"out":"", !DIAS_ABIERTO.includes(d.getDay())?"closed":"", d<hoy?"past":"", f===iso(hoy)?"today":"", f===sel?"sel":""].join(" ");
-    html += `<button type="button" class="${cls}" data-f="${f}" aria-label="${d.toLocaleDateString("es-AR",{weekday:"long",day:"numeric",month:"long"})}${list.length?`, ${list.length} turnos`:""}"><span class="n">${d.getDate()}</span><span class="c ${list.length?(lleno?"full":""):"none"}">${list.length||0}</span></button>`;
+    html += `<button type="button" class="${cls}" data-f="${f}" aria-label="${d.toLocaleDateString("es-AR",{weekday:"long",day:"numeric",month:"long"})}${list.length?`, ${list.length} turnos`:""}"><span class="n">${d.getDate()}</span><span class="c ${list.length?(lleno?"full":""):"none"} ${list.some(esPend)?"pend":""}">${list.length||0}</span></button>`;
   }
   $("#grid").innerHTML = html;
 }
@@ -359,10 +374,10 @@ function renderDay(){
   else if (!list.length) html = `<div class="empty"><b>Día libre</b>No hay turnos reservados para este día.</div>`;
   else html = `<div class="list">` + list.map(t => {
     const blk = t.servicio==="Bloqueado";
-    return `<button type="button" class="turno ${blk?"blocked":""}" data-id="${t.id}">
+    return `<button type="button" class="turno ${blk?"blocked":""} ${esPend(t)?"pend":""}" data-id="${t.id}">
       <div class="hr"><b>${esc(t.horaInicio)}</b><span>a ${esc(t.horaFin||"")}</span></div>
       <div class="info">
-        <b>${blk?"Horario bloqueado":esc(t.cliente)}${t.origen==="web"?'<span class="tag web">Web</span>':""}</b>
+        <b>${blk?"Horario bloqueado":esc(t.cliente)}${esPend(t)?'<span class="tag pend">Sin confirmar</span>':(t.origen==="web"?'<span class="tag web">Web</span>':"")}</b>
         <div class="s">${blk?"":esc(t.servicio)+" · "}${fmtDur(t.duracionMinutos||60)}</div>
         ${t.comentario?`<div class="o">“${esc(t.comentario)}”</div>`:(!blk&&t.telefono?`<div class="o">${esc(t.telefono)}</div>`:"")}
       </div></button>`;
@@ -406,16 +421,29 @@ function verTurno(id){
   $("#v-cliente").textContent = blk ? "Horario bloqueado" : t.cliente;
   $("#v-sub").textContent = cap(largo(t.fecha)) + ` · ${t.horaInicio} a ${t.horaFin} h`;
   $("#v-quick").hidden = blk || !t.telefono;
+  const msgConf = `¡Hola ${String(t.cliente).split(" ")[0]}! Tu turno de ${t.servicio} en P&F Estética quedó confirmado para el ${largo(t.fecha)} a las ${t.horaInicio} h. Te esperamos en El Salvador 1363, Tortuguitas. Si no podés venir, avisanos con anticipación. ¡Gracias!`;
+  const pend = esPend(t);
+  $("#v-confirm").hidden = !(pend && t.telefono);
+  $("#v-confok").hidden = !(t.estado==="confirmado");
+  if (t.telefono) $("#v-confirm").href = `https://wa.me/${waNum(t.telefono)}?text=${encodeURIComponent(msgConf)}`;
   if (t.telefono){
     $("#v-wa").href = `https://wa.me/${waNum(t.telefono)}?text=${encodeURIComponent(`¡Hola ${String(t.cliente).split(" ")[0]}! Te escribo de P&F Estética por tu turno de ${t.servicio} el ${largo(t.fecha)} a las ${t.horaInicio} h. ¡Te esperamos en El Salvador 1363, Tortuguitas!`)}`;
     $("#v-tel").href = "tel:" + String(t.telefono).replace(/[^\d+]/g,"");
   }
   const rows = blk ? [["Duración", fmtDur(t.duracionMinutos||60)], ["Nota", t.comentario||"—"]] :
-    [["Servicio", t.servicio], ["Duración", fmtDur(t.duracionMinutos||60)], ["WhatsApp", t.telefono||"—"], ["Comentario", t.comentario||"—"], ["Reservado", t.origen==="web" ? "Desde la web" : "Cargado en la agenda"]];
+    [["Servicio", t.servicio], ["Duración", fmtDur(t.duracionMinutos||60)], ["WhatsApp", t.telefono||"—"], ["Comentario", t.comentario||"—"], ["Reservado", t.origen==="web" ? "Desde la web" : "Cargado en la agenda"], ["Estado", t.origen!=="web" || t.estado==="confirmado" ? "Confirmado" : "Sin confirmar"]];
   $("#v-det").innerHTML = rows.map(([a,b])=>`<div><span>${a}</span><b>${esc(b)}</b></div>`).join("");
   $("#v-delete").textContent = blk ? "Desbloquear horario" : "Cancelar este turno";
   abrir("#sheet-view");
 }
+
+$("#v-confirm").addEventListener("click", () => {
+  // el enlace abre WhatsApp; en paralelo marcamos el turno como confirmado
+  const t = viendo; if (!t) return;
+  updateDoc(doc(db,"turnos",t.id), { estado:"confirmado", confirmado:new Date().toISOString() })
+    .then(() => { toast("Turno confirmado"); setTimeout(cerrar, 300); })
+    .catch(err => { console.error(err); toast("No se pudo marcar como confirmado"); });
+});
 
 let armado = false;
 function resetDelete(){ armado=false; const b=$("#v-delete"); b.classList.remove("sure"); if (viendo) b.textContent = viendo.servicio==="Bloqueado" ? "Desbloquear horario" : "Cancelar este turno"; }
