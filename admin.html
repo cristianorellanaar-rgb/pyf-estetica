@@ -235,12 +235,14 @@ h1,h2,h3{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;margin:0
     <div class="f">
       <label>Servicio</label>
       <div class="seg" id="n-svc">
-        <button type="button" data-v="Manicuría" data-d="60" aria-pressed="true">Manos</button>
-        <button type="button" data-v="Pedicuría" data-d="60" aria-pressed="false">Pies</button>
-        <button type="button" data-v="Manicuría + Pedicuría" data-d="120" aria-pressed="false">Manos y pies</button>
-        <button type="button" data-v="Otro" data-d="60" aria-pressed="false">Otro</button>
-        <button type="button" data-v="Bloqueado" data-d="60" aria-pressed="false" style="grid-column:span 2">Bloquear horario</button>
+        <button type="button" data-v="Turno" aria-pressed="true">Turno</button>
+        <button type="button" data-v="Otro" aria-pressed="false">Otro servicio</button>
+        <button type="button" data-v="Bloqueado" aria-pressed="false">Bloquear</button>
       </div>
+    </div>
+    <div id="n-lista">
+      <div class="f"><label for="n-manos">Manos</label><select id="n-manos"></select></div>
+      <div class="f"><label for="n-pies">Pies</label><select id="n-pies"></select></div>
     </div>
     <div class="f" id="n-otro-wrap" hidden><label for="n-otro">¿Qué servicio?</label><input id="n-otro" placeholder="Ej: Kapping + diseño"></div>
     <div id="n-client">
@@ -249,7 +251,7 @@ h1,h2,h3{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;margin:0
     </div>
     <div class="row2">
       <div class="f"><label for="n-dur">Duración</label>
-        <select id="n-dur"><option value="30">30 min</option><option value="45">45 min</option><option value="60" selected>1 h</option><option value="90">1 h 30</option><option value="120">2 h</option><option value="150">2 h 30</option><option value="180">3 h</option></select>
+        <select id="n-dur"><option value="30">30 min</option><option value="45">45 min</option><option value="60" selected>1 h</option><option value="75">1 h 15</option><option value="90">1 h 30</option><option value="120">2 h</option><option value="150">2 h 30</option><option value="180">3 h</option><option value="210">3 h 30</option></select>
       </div>
       <div class="f"><label for="n-hora">Hora</label><select id="n-hora"></select></div>
     </div>
@@ -462,7 +464,25 @@ $("#v-delete").onclick = async () => {
 };
 
 /* ---------- Nuevo turno ---------- */
-let nSvc = { v:"Manicuría", d:60 };
+const SERVICIOS = [
+  {cat:"manos", nombre:"Manicuría simple", dur:45},
+  {cat:"manos", nombre:"Esmaltado semipermanente", dur:60},
+  {cat:"manos", nombre:"Capping", dur:120},
+  {cat:"manos", nombre:"Soft gel (tips)", dur:120},
+  {cat:"pies", nombre:"Belleza de pies", dur:45},
+  {cat:"pies", nombre:"Belleza de pies con semi", dur:50},
+  {cat:"pies", nombre:"Pedicuría simple", dur:75},
+  {cat:"pies", nombre:"Pedicuría completa con semi", dur:90}
+];
+for (const c of ["manos","pies"]) $("#n-"+c).innerHTML = `<option value="">— Ninguno —</option>` + SERVICIOS.filter(s=>s.cat===c).map(s=>`<option value="${s.nombre}" data-d="${s.dur}">${s.nombre} · ${fmtDur(s.dur)}</option>`).join("");
+let nSvc = { v:"Turno" };
+function setDur(m){
+  const sel = $("#n-dur");
+  if (![...sel.options].some(o=>Number(o.value)===m)) { const o=document.createElement("option"); o.value=m; o.textContent=fmtDur(m); sel.add(o); [...sel.options].sort((a,b)=>a.value-b.value).forEach(x=>sel.add(x)); }
+  sel.value = String(m);
+}
+function durElegida(){ return ["manos","pies"].reduce((a,c)=>{ const o=$("#n-"+c).selectedOptions[0]; return a + (o && o.value ? Number(o.dataset.d) : 0); },0); }
+function servicioElegido(){ return ["manos","pies"].map(c=>$("#n-"+c).value).filter(Boolean).join(" + "); }
 function horasPosibles(dur){
   const occ = ocupadosDia(sel); const ahora = new Date().getHours()*60+new Date().getMinutes();
   return SLOTS.filter(h => entra(h,dur) && slotsDe(h,dur).every(x=>!occ.has(x)) && !(sel===iso(hoy) && toMin(h)<ahora));
@@ -473,21 +493,23 @@ function llenarHoras(pref){
 }
 function nuevo(hora){
   $("#new-form").reset(); $("#n-err").textContent = "";
-  setSvc($("#n-svc button")); $("#n-dur").value = "60";
+  setSvc($("#n-svc button")); setDur(60);
   $("#n-sub").textContent = cap(largo(sel));
   llenarHoras(hora);
   abrir("#sheet-new");
 }
 function setSvc(btn){
   document.querySelectorAll("#n-svc button").forEach(b=>b.setAttribute("aria-pressed", b===btn));
-  nSvc = { v:btn.dataset.v, d:Number(btn.dataset.d) };
-  $("#n-dur").value = String(nSvc.d);
+  nSvc = { v:btn.dataset.v };
+  if (nSvc.v!=="Turno") setDur(60); else if (durElegida()) setDur(durElegida());
   $("#n-otro-wrap").hidden = nSvc.v!=="Otro";
+  $("#n-lista").hidden = nSvc.v!=="Turno";
   $("#n-client").hidden = nSvc.v==="Bloqueado";
   llenarHoras($("#n-hora").value);
 }
 $("#n-svc").addEventListener("click", e => { const b=e.target.closest("button"); if (b) setSvc(b); });
 $("#n-dur").addEventListener("change", () => llenarHoras($("#n-hora").value));
+["manos","pies"].forEach(c => $("#n-"+c).addEventListener("change", () => { const d=durElegida(); if (d) setDur(d); llenarHoras($("#n-hora").value); }));
 $("#add-btn").onclick = () => nuevo();
 
 $("#new-form").addEventListener("submit", async e => {
@@ -496,7 +518,8 @@ $("#new-form").addEventListener("submit", async e => {
   const blk = nSvc.v==="Bloqueado";
   const cliente = blk ? "Bloqueado" : $("#n-cliente").value.trim();
   const telefono = blk ? "" : $("#n-tel").value.trim();
-  const servicio = nSvc.v==="Otro" ? ($("#n-otro").value.trim() || "Otro") : nSvc.v;
+  const servicio = nSvc.v==="Otro" ? ($("#n-otro").value.trim() || "Otro") : nSvc.v==="Bloqueado" ? "Bloqueado" : servicioElegido();
+  if (nSvc.v==="Turno" && !servicio) { err.textContent = "Elegí un servicio de manos o de pies."; return; }
   const dur = Number($("#n-dur").value), hora = $("#n-hora").value;
   if (!blk && cliente.length < 2) { err.textContent = "Escribí el nombre de la clienta."; return; }
   if (!hora) { err.textContent = "No hay lugar para esa duración ese día."; return; }

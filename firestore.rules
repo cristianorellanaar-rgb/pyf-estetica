@@ -18,7 +18,7 @@ service cloud.firestore {
         && request.resource.data.cliente is string && request.resource.data.cliente.size() > 1 && request.resource.data.cliente.size() <= 80
         && request.resource.data.telefono is string && request.resource.data.telefono.size() <= 30
         && request.resource.data.servicio is string && request.resource.data.servicio.size() <= 60
-        && request.resource.data.duracionMinutos is int && request.resource.data.duracionMinutos > 0 && request.resource.data.duracionMinutos <= 180
+        && request.resource.data.duracionMinutos is int && request.resource.data.duracionMinutos > 0 && request.resource.data.duracionMinutos <= 300
         && (!('comentario' in request.resource.data) || (request.resource.data.comentario is string && request.resource.data.comentario.size() <= 300))
       );
     }
