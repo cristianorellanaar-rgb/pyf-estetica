@@ -289,7 +289,7 @@ footer .copy{width:100%;font-size:13px;color:#d8aea8}
         <p>Los horarios que ves son los que están libres ahora mismo.</p>
         <div class="steps" aria-hidden="true"><span class="on"></span><span></span><span></span><span></span></div>
       </div>
-      <div class="demo">Vista de diseño: las duraciones son aproximadas y la disponibilidad es simulada.</div>
+      
 
       <div id="flow">
         <div class="step" id="s1">
@@ -430,13 +430,12 @@ const fmtDur = m => m<60? m+" min" : (m%60? Math.floor(m/60)+" h "+m%60 : m/60+"
 const DOW = ["dom","lun","mar","mié","jue","vie","sáb"];
 const svg = k => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+ICONS[k]+'</svg>';
 
-/* Disponibilidad simulada (en producción se lee de Firestore) */
+/* Disponibilidad: se carga desde Firestore (colección pública "disponibilidad") */
 function rnd(seed){let x=Math.sin(seed)*10000;return x-Math.floor(x)}
-const ocupados = {};
+let OCUP = new Set(); // "AAAA-MM-DD_HH:MM" ocupados, leídos de Firestore
 function ocupadoEn(fecha,h){
   const k=fecha+"_"+h;
-  if(!(k in ocupados)){const s=[...k].reduce((a,c)=>a+c.charCodeAt(0)*7,0);ocupados[k]=rnd(s)<.38}
-  return ocupados[k];
+  return OCUP.has(k);
 }
 function libresDelDia(fecha,dur){
   const hoy=new Date(), esHoy=fecha===iso(hoy), ahora=hoy.getHours()*60+hoy.getMinutes()+60;
@@ -511,13 +510,34 @@ document.querySelectorAll("[data-combo]").forEach(a=>a.addEventListener("click",
 $("#dates").addEventListener("click",e=>{const b=e.target.closest(".day");if(!b||b.disabled)return;state.fecha=b.dataset.f;state.hora=null;render();go($("#s3"))});
 $("#times").addEventListener("click",e=>{const b=e.target.closest(".t");if(!b||b.disabled)return;state.hora=b.dataset.h;render();go($("#s4"))});
 $("#form").addEventListener("input",validar);
-$("#form").addEventListener("submit",e=>{
+const MAIL_ENDPOINT="https://formsubmit.co/ajax/fatimamailin@gmail.com";
+$("#form").addEventListener("submit",async e=>{
   e.preventDefault(); if($("#confirm").disabled) return;
-  $("#flow").style.display="none"; $(".demo").style.display="none"; $(".book-head").style.display="none";
+  const btn=$("#confirm"), nombre=$("#nombre").value.trim(), tel=$("#tel").value.trim(), obs=$("#obs").value.trim();
+  const fin=toH(toMin(state.hora)+state.svc.dur), dia=$("#pick2").textContent;
+  btn.disabled=true; btn.textContent="Enviando…";
+  try{
+    const r=await fetch(MAIL_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({
+      _subject:`Nueva reserva: ${state.svc.nombre} · ${dia} ${state.hora} h`,
+      _template:"table", _captcha:"false",
+      Cliente:nombre, WhatsApp:tel, Servicio:state.svc.nombre, Duracion:fmtDur(state.svc.dur),
+      Dia:dia, Fecha:state.fecha, Horario:`${state.hora} a ${fin} h`, Comentario:obs||"-",
+      Escribirle:`https://wa.me/549${tel.replace(/\D/g,"").replace(/^0/,"").replace(/^15/,"")}`
+    })});
+    const j=await r.json().catch(()=>({}));
+    if(!r.ok||j.success==="false"||j.success===false) throw new Error(j.message||r.status);
+  }catch(err){
+    btn.disabled=false; btn.textContent="Confirmar reserva";
+    alertBox(`No pudimos enviar la reserva. Probá de nuevo o escribinos por <a href="https://wa.me/5491133777344" target="_blank" rel="noopener">WhatsApp</a>.`);
+    return;
+  }
+  btn.textContent="Confirmar reserva";
+  $("#flow").style.display="none"; $(".book-head").style.display="none";
   $("#ok-text").innerHTML=`${$("#nombre").value.split(" ")[0]}, reservaste <b>${state.svc.nombre}</b> para el ${$("#pick2").textContent} a las ${state.hora} h. Te escribimos por WhatsApp para confirmarlo.`;
   $("#ok").style.display="block"; go($("#agenda"));
 });
-$("#again").addEventListener("click",()=>{setSel([]);$("#form").reset();$("#ok").style.display="none";$("#flow").style.display="";$(".demo").style.display="";$(".book-head").style.display="";render();go($("#agenda"))});
+function alertBox(html){let el=$("#form-err");if(!el){el=document.createElement("p");el.id="form-err";el.className="note";el.style.color="#a3372f";$("#confirm").after(el)}el.innerHTML=html}
+$("#again").addEventListener("click",()=>{setSel([]);$("#form").reset();$("#ok").style.display="none";$("#flow").style.display="";$(".book-head").style.display="";render();go($("#agenda"))});
 
 // lista de servicios
 $("#svc-list").innerHTML=SERVICIOS.map(s=>`<div class="item"><span class="ico">${svg(s.ico)}</span><h3>${s.nombre}</h3><p>${s.desc}</p><a class="go" href="#agenda" data-svc="${s.id}">Reservar · ${fmtDur(s.dur)} →</a></div>`).join("");
@@ -536,6 +556,28 @@ function onScroll(){
 addEventListener("scroll",onScroll,{passive:true});
 $("#yr").textContent=new Date().getFullYear();
 render(); onScroll();
+</script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+import { getFirestore, collection, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+const app = initializeApp({
+  apiKey: "AIzaSyBYLPdFHiheMRJJdITq2cHP8zZvPEux448",
+  authDomain: "pyf-estetica.firebaseapp.com",
+  projectId: "pyf-estetica",
+  storageBucket: "pyf-estetica.firebasestorage.app",
+  messagingSenderId: "85421227791",
+  appId: "1:85421227791:web:d98a132290441c77f7887a"
+});
+const db = getFirestore(app);
+const d = new Date(), h = new Date(); h.setDate(h.getDate()+DIAS_ADELANTE);
+const q = query(collection(db,"disponibilidad"), where("fecha",">=",iso(d)), where("fecha","<=",iso(h)));
+onSnapshot(q, snap => {
+  const set = new Set();
+  snap.forEach(doc => { const x = doc.data(); set.add(`${x.fecha}_${x.hora}`); });
+  OCUP = set;
+  if(state.hora && state.fecha && !libresDelDia(state.fecha,state.svc.dur).some(g=>g.slots.some(s=>s.h===state.hora&&s.libre))) state.hora=null;
+  render();
+}, err => console.warn("disponibilidad", err));
 </script>
 </body>
 </html>
