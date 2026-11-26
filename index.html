@@ -3,9 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>PYF Estética · Manicuría y pedicuría en Tortuguitas</title>
-<meta name="description" content="PYF Estética, manicuría y pedicuría con Fatima Mailin en Tortuguitas. Reservá tu turno online desde el celular: elegí el servicio, el día y el horario disponible.">
+<title>P&amp;F Estética · Manicuría y pedicuría en Tortuguitas</title>
+<meta name="description" content="P&amp;F Estética, manicuría y pedicuría con Fatima Mailin en Tortuguitas. Reservá tu turno online desde el celular: elegí el servicio, el día y el horario disponible.">
 <meta name="theme-color" content="#f7ece8">
+<link rel="icon" href="favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="96x96" href="favicon-96.png">
+<link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:title" content="P&amp;F Estética · Reservá tu turno">
+<meta property="og:description" content="Manicuría y pedicuría con Fatima Mailin en Tortuguitas. Reservá online.">
+<meta property="og:image" content="img/trabajo-1.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -222,19 +229,29 @@ footer .copy{width:100%;font-size:13px;color:#d8aea8}
 .g img{width:100%;height:100%;object-fit:cover}
 .g.big{grid-row:span 2}
 @media(max-width:760px){.gallery{height:auto;grid-template-columns:1fr 1fr;grid-template-rows:none}.g{aspect-ratio:1}.g.big{grid-column:span 2;grid-row:auto;aspect-ratio:4/3}}
+
+.logo{width:42px;height:42px;border-radius:50%;display:block;box-shadow:0 0 0 2px #fff,0 0 0 3px #c9a45c}
+footer .logo{box-shadow:0 0 0 2px rgba(255,255,255,.25)}
+.hero-art{background:#2b2120 url(img/hero.webp) center/cover no-repeat !important}
+.works{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.works img{width:100%;height:auto;aspect-ratio:1;object-fit:cover;border-radius:18px;display:block}
+@media(max-width:760px){.works{grid-template-columns:1fr 1fr;gap:8px}.works img{border-radius:14px}}
+.ig-btn{display:inline-flex;align-items:center;gap:10px;margin-top:16px;padding:13px 20px;border-radius:999px;border:1.5px solid var(--rose);color:var(--rose-dark);font-weight:600;text-decoration:none}
+.ig-btn svg{width:20px;height:20px}
 </style>
 </head>
 <body>
 
 <header class="top" id="top">
   <div class="wrap">
-    <a href="#" class="brand" aria-label="PYF Estética, inicio">
-      <span class="mono">PYF</span>
-      <span><b>PYF Estética</b><small>Manos y pies</small></span>
+    <a href="#" class="brand" aria-label="P&amp;F Estética, inicio">
+      <img class="logo" src="img/logo.png" alt="" width="42" height="42">
+      <span><b>P&amp;F Estética</b><small>Manos y pies</small></span>
     </a>
     <nav class="nav">
       <a href="#servicios">Servicios</a>
       <a href="#como">Cómo reservar</a>
+      <a href="#trabajos">Trabajos</a>
       <a href="#local">El local</a>
       <a href="#visitanos">Horarios</a>
     </nav>
@@ -272,7 +289,7 @@ footer .copy{width:100%;font-size:13px;color:#d8aea8}
     <div class="hero-art" aria-hidden="true">
       <span class="ring" style="width:340px;height:340px;right:-120px;top:-80px"></span>
       <span class="ring" style="width:220px;height:220px;left:-70px;bottom:40px"></span>
-      <span class="ph">acá va una foto del local o de un trabajo</span>
+      
       <div class="float-card">
         <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span>
         <span><b>Próximo turno libre</b><span id="next-free">—</span></span>
@@ -339,6 +356,16 @@ footer .copy{width:100%;font-size:13px;color:#d8aea8}
   </div>
 </section>
 
+<section class="block" id="trabajos" style="padding-top:10px">
+  <div class="wrap">
+    <div class="sec-head"><span class="eyebrow">Trabajos</span><h2>Así quedan</h2><p class="lead">Algunos trabajos de Fatima. Mirá más en nuestro Instagram.</p></div>
+    <div class="works">
+      <img src="img/trabajo-1.webp" alt="Trabajo de uñas 1" loading="lazy" width="640" height="640"><img src="img/trabajo-2.webp" alt="Trabajo de uñas 2" loading="lazy" width="640" height="640"><img src="img/trabajo-3.webp" alt="Trabajo de uñas 3" loading="lazy" width="640" height="640"><img src="img/trabajo-4.webp" alt="Trabajo de uñas 4" loading="lazy" width="640" height="640"><img src="img/trabajo-5.webp" alt="Trabajo de uñas 5" loading="lazy" width="640" height="640"><img src="img/trabajo-6.webp" alt="Trabajo de uñas 6" loading="lazy" width="640" height="640">
+    </div>
+    <a class="ig-btn" href="https://www.instagram.com/pf_est.corporal/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".9" fill="currentColor"/></svg>Seguinos en @pf_est.corporal</a>
+  </div>
+</section>
+
 <section class="block" id="como" style="padding-top:10px">
   <div class="wrap">
     <div class="sec-head"><span class="eyebrow">Cómo reservar</span><h2>Tres pasos y listo</h2></div>
@@ -390,12 +417,12 @@ footer .copy{width:100%;font-size:13px;color:#d8aea8}
 
 <footer>
   <div class="wrap">
-    <a href="#" class="brand"><span class="mono">PYF</span><span><b>PYF Estética</b><small>Manos y pies</small></span></a>
+    <a href="#" class="brand"><img class="logo" src="img/logo.png" alt="" width="42" height="42"><span><b>P&amp;F Estética</b><small>Manos y pies</small></span></a>
     <div class="soc">
-      <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".9" fill="currentColor"/></svg></a>
+      <a href="https://www.instagram.com/pf_est.corporal/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".9" fill="currentColor"/></svg></a>
       <a href="https://wa.me/5491133777344?text=Hola%20Fatima%2C%20quer%C3%ADa%20consultar%20por%20un%20turno" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-3.3-.8-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .5l-.3.5-.4.5c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l2 1c.3.1.5.2.5.3.1.1.1.7-.1 1.3z"/></svg></a>
     </div>
-    <div class="copy">© <span id="yr"></span> PYF Estética · Turnos online</div>
+    <div class="copy">© <span id="yr"></span> P&amp;F Estética · Turnos online</div>
   </div>
 </footer>
 
@@ -415,7 +442,7 @@ const ICONS = {
   comb:'<rect x="3" y="4" width="18" height="5" rx="1.5"/><path d="M5 9v10M8 9v8M11 9v10M14 9v8M17 9v10M20 9v8"/>'
 };
 const SERVICIOS = [
-  {id:"mani", nombre:"Manicuría", dur:60, desc:"Esmaltado semipermanente, kapping o tradicional. Manos prolijas y que duran.", ico:"hand"},
+  {id:"mani", nombre:"Manicuría", dur:60, desc:"Semipermanente, kapping, esculpidas, encapsuladas en gel, french y diseños.", ico:"hand"},
   {id:"pedi", nombre:"Pedicuría", dur:60, desc:"Limpieza, limado y esmaltado. Pies listos para las sandalias.", ico:"foot"}
 ];
 const BLOQUES = [["08:00","12:00","Mañana"],["13:00","20:00","Tarde"]];
@@ -515,13 +542,17 @@ $("#form").addEventListener("submit",async e=>{
   e.preventDefault(); if($("#confirm").disabled) return;
   const btn=$("#confirm"), nombre=$("#nombre").value.trim(), tel=$("#tel").value.trim(), obs=$("#obs").value.trim();
   const fin=toH(toMin(state.hora)+state.svc.dur), dia=$("#pick2").textContent;
+  const slots=[]; for(let m=toMin(state.hora);m<toMin(state.hora)+state.svc.dur;m+=SLOT) slots.push(toH(m));
+  if(slots.some(h=>OCUP.has(state.fecha+"_"+h))){ alertBox("Ese horario se acaba de ocupar. Elegí otro, por favor."); state.hora=null; render(); go($("#s3")); return; }
   btn.disabled=true; btn.textContent="Enviando…";
+  let enAgenda=false;
+  try{ if(window.guardarTurno){ await window.guardarTurno({fecha:state.fecha,horaInicio:state.hora,horaFin:fin,cliente:nombre,telefono:tel,servicio:state.svc.nombre,duracionMinutos:state.svc.dur,comentario:obs,creado:new Date().toISOString(),origen:"web"},slots); enAgenda=true; } }catch(err){ console.warn("agenda",err); }
   try{
     const r=await fetch(MAIL_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({
       _subject:`Nueva reserva: ${state.svc.nombre} · ${dia} ${state.hora} h`,
       _template:"table", _captcha:"false",
       Cliente:nombre, WhatsApp:tel, Servicio:state.svc.nombre, Duracion:fmtDur(state.svc.dur),
-      Dia:dia, Fecha:state.fecha, Horario:`${state.hora} a ${fin} h`, Comentario:obs||"-",
+      Dia:dia, Fecha:state.fecha, Horario:`${state.hora} a ${fin} h`, Comentario:obs||"-", Agenda: enAgenda?"Ya quedó cargado en la agenda":"Cargalo en la agenda (admin.html)",
       Escribirle:`https://wa.me/549${tel.replace(/\D/g,"").replace(/^0/,"").replace(/^15/,"")}`
     })});
     const j=await r.json().catch(()=>({}));
@@ -559,7 +590,7 @@ render(); onScroll();
 </script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
-import { getFirestore, collection, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+import { getFirestore, collection, query, where, onSnapshot, doc, writeBatch } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 const app = initializeApp({
   apiKey: "AIzaSyBYLPdFHiheMRJJdITq2cHP8zZvPEux448",
   authDomain: "pyf-estetica.firebaseapp.com",
@@ -569,6 +600,13 @@ const app = initializeApp({
   appId: "1:85421227791:web:d98a132290441c77f7887a"
 });
 const db = getFirestore(app);
+window.guardarTurno = async (turno, slots) => {
+  const batch = writeBatch(db);
+  const ref = doc(collection(db, "turnos"));
+  batch.set(ref, turno);
+  for (const h of slots) batch.set(doc(db, "disponibilidad", `${turno.fecha}_${h}`), { fecha: turno.fecha, hora: h, ocupado: true, turnoId: ref.id });
+  await batch.commit();
+};
 const d = new Date(), h = new Date(); h.setDate(h.getDate()+DIAS_ADELANTE);
 const q = query(collection(db,"disponibilidad"), where("fecha",">=",iso(d)), where("fecha","<=",iso(h)));
 onSnapshot(q, snap => {
