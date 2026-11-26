@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>P&amp;F Estética · Manicuría y pedicuría en Tortuguitas</title>
-<meta name="description" content="P&amp;F Estética, manicuría y pedicuría con Fatima Mailin en Tortuguitas. Reservá tu turno online desde el celular: elegí el servicio, el día y el horario disponible.">
+<title>P&amp;F Estética · Manos, pies, masajes y faciales en Tortuguitas</title>
+<meta name="description" content="P&amp;F Estética en Tortuguitas: manicuría, pedicuría, masajes y tratamientos faciales. Reservá tu turno de manos y pies online desde el celular.">
 <meta name="theme-color" content="#f7ece8">
 <link rel="icon" href="favicon.ico" sizes="48x48">
 <link rel="icon" type="image/png" sizes="96x96" href="favicon-96.png">
 <link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta property="og:title" content="P&amp;F Estética · Reservá tu turno">
-<meta property="og:description" content="Manicuría y pedicuría con Fatima Mailin en Tortuguitas. Reservá online.">
+<meta property="og:description" content="Manicuría, pedicuría, masajes y faciales en Tortuguitas. Reservá online.">
 <meta property="og:image" content="img/trabajo-1.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -234,6 +234,8 @@ footer .copy{width:100%;font-size:13px;color:#d8aea8}
 .logo{width:42px;height:42px;border-radius:50%;display:block;box-shadow:0 0 0 2px #fff,0 0 0 3px #c9a45c}
 footer .logo{box-shadow:0 0 0 2px rgba(255,255,255,.25)}
 .hero-art{background:#2b2120 url(img/hero.webp) center/cover no-repeat !important}
+.svc2{grid-template-columns:repeat(2,1fr)}
+@media(max-width:760px){.svc2{grid-template-columns:1fr}}
 .works{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .works img{width:100%;height:auto;aspect-ratio:1;object-fit:cover;border-radius:18px;display:block}
 @media(max-width:760px){.works{grid-template-columns:1fr 1fr;gap:8px}.works img{border-radius:14px}}
@@ -247,7 +249,7 @@ footer .logo{box-shadow:0 0 0 2px rgba(255,255,255,.25)}
   <div class="wrap">
     <a href="#" class="brand" aria-label="P&amp;F Estética, inicio">
       <img class="logo" src="img/logo.png" alt="" width="42" height="42">
-      <span><b>P&amp;F Estética</b><small>Manos y pies</small></span>
+      <span><b>P&amp;F Estética</b><small>Centro de estética</small></span>
     </a>
     <nav class="nav">
       <a href="#servicios">Servicios</a>
@@ -277,7 +279,7 @@ footer .logo{box-shadow:0 0 0 2px rgba(255,255,255,.25)}
     <div>
       <span class="eyebrow"><i></i>Agenda online abierta</span>
       <h1>Manos y pies,<br><em>a un toque.</em></h1>
-      <p>Manicuría y pedicuría con Fatima Mailin. Elegí el servicio, el día y el horario que te quede cómodo. Reservás en un minuto desde el celular y te confirmamos por WhatsApp.</p>
+      <p>Manicuría, pedicuría, masajes y tratamientos faciales en Tortuguitas. Reservá tu turno de manos y pies en un minuto desde el celular y te confirmamos por WhatsApp.</p>
       <a href="#agenda" class="cta">
         Reservá tu turno
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
@@ -304,7 +306,7 @@ footer .logo{box-shadow:0 0 0 2px rgba(255,255,255,.25)}
     <div class="card" id="book-card">
       <div class="book-head">
         <h2>Reservá tu turno en nuestra agenda</h2>
-        <p>Los horarios que ves son los que están libres ahora mismo.</p>
+        <p>Turnos de manos y pies con <b>Fatima Mailin</b>. Los horarios que ves son los que están libres ahora mismo.</p>
         <div class="steps" aria-hidden="true"><span class="on"></span><span></span><span></span><span></span></div>
       </div>
       
@@ -352,14 +354,14 @@ footer .logo{box-shadow:0 0 0 2px rgba(255,255,255,.25)}
 
 <section class="block" id="servicios">
   <div class="wrap">
-    <div class="sec-head"><span class="eyebrow">Servicios</span><h2>Lo que hacemos</h2><p class="lead">Te atiende Fatima Mailin, con turnos de martes a sábado.</p></div>
-    <div class="list" id="svc-list"></div>
+    <div class="sec-head"><span class="eyebrow">Servicios</span><h2>Lo que hacemos</h2><p class="lead">Todo para tu cuidado en un mismo lugar, de martes a sábado.</p></div>
+    <div class="list svc2" id="svc-list"></div>
   </div>
 </section>
 
 <section class="block" id="trabajos" style="padding-top:10px">
   <div class="wrap">
-    <div class="sec-head"><span class="eyebrow">Trabajos</span><h2>Así quedan</h2><p class="lead">Algunos trabajos de Fatima. Mirá más en nuestro Instagram.</p></div>
+    <div class="sec-head"><span class="eyebrow">Trabajos</span><h2>Así quedan</h2><p class="lead">Algunos de nuestros trabajos. Mirá más en nuestro Instagram.</p></div>
     <div class="works">
       <img src="img/trabajo-1.webp" alt="Trabajo de uñas 1" loading="lazy" width="640" height="640"><img src="img/trabajo-2.webp" alt="Trabajo de uñas 2" loading="lazy" width="640" height="640"><img src="img/trabajo-3.webp" alt="Trabajo de uñas 3" loading="lazy" width="640" height="640"><img src="img/trabajo-4.webp" alt="Trabajo de uñas 4" loading="lazy" width="640" height="640"><img src="img/trabajo-5.webp" alt="Trabajo de uñas 5" loading="lazy" width="640" height="640"><img src="img/trabajo-6.webp" alt="Trabajo de uñas 6" loading="lazy" width="640" height="640">
     </div>
@@ -409,7 +411,10 @@ footer .logo{box-shadow:0 0 0 2px rgba(255,255,255,.25)}
         <div>
           <h3>Dónde estamos</h3>
           <p>El Salvador 1363<br>Tortuguitas, Buenos Aires</p>
-          <p style="margin-top:6px">WhatsApp: <a href="https://wa.me/5491133777344?text=Hola%20Fatima%2C%20quer%C3%ADa%20consultar%20por%20un%20turno" target="_blank" rel="noopener" style="color:var(--rose-dark);font-weight:600">11 3377-7344</a></p>
+          <p style="margin-top:8px;line-height:1.7">WhatsApp<br>
+            Manos y pies: <a href="https://wa.me/5491133777344" target="_blank" rel="noopener" style="color:var(--rose-dark);font-weight:600">11 3377-7344</a><br>
+            Masajes: <a href="https://wa.me/5491168721229" target="_blank" rel="noopener" style="color:var(--rose-dark);font-weight:600">11 6872-1229</a><br>
+            Faciales: <a href="https://wa.me/5491123732591" target="_blank" rel="noopener" style="color:var(--rose-dark);font-weight:600">11 2373-2591</a></p>
           <a class="go" href="https://www.google.com/maps/search/?api=1&query=El+Salvador+1363%2C+Tortuguitas%2C+Buenos+Aires" target="_blank" rel="noopener">Cómo llegar →</a>
         </div>
       </div>
@@ -419,10 +424,10 @@ footer .logo{box-shadow:0 0 0 2px rgba(255,255,255,.25)}
 
 <footer>
   <div class="wrap">
-    <a href="#" class="brand"><img class="logo" src="img/logo.png" alt="" width="42" height="42"><span><b>P&amp;F Estética</b><small>Manos y pies</small></span></a>
+    <a href="#" class="brand"><img class="logo" src="img/logo.png" alt="" width="42" height="42"><span><b>P&amp;F Estética</b><small>Centro de estética</small></span></a>
     <div class="soc">
       <a href="https://www.instagram.com/pf_est.corporal/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".9" fill="currentColor"/></svg></a>
-      <a href="https://wa.me/5491133777344?text=Hola%20Fatima%2C%20quer%C3%ADa%20consultar%20por%20un%20turno" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-3.3-.8-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .5l-.3.5-.4.5c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l2 1c.3.1.5.2.5.3.1.1.1.7-.1 1.3z"/></svg></a>
+      <a href="https://wa.me/5491133777344?text=Hola%2C%20quer%C3%ADa%20consultar%20por%20un%20turno" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-3.3-.8-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .5l-.3.5-.4.5c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l2 1c.3.1.5.2.5.3.1.1.1.7-.1 1.3z"/></svg></a>
     </div>
     <div class="copy">© <span id="yr"></span> P&amp;F Estética · Turnos online · <a href="admin.html" style="color:#d8aea8">Acceso agenda</a></div>
   </div>
@@ -430,7 +435,7 @@ footer .logo{box-shadow:0 0 0 2px rgba(255,255,255,.25)}
 
 <div class="dock" id="dock">
   <a href="#agenda" class="cta">Reservá tu turno</a>
-  <a href="https://wa.me/5491133777344?text=Hola%20Fatima%2C%20quer%C3%ADa%20consultar%20por%20un%20turno" target="_blank" rel="noopener" class="wa" aria-label="Escribinos por WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-3.3-.8-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .5l-.3.5-.4.5c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l2 1c.3.1.5.2.5.3.1.1.1.7-.1 1.3z"/></svg></a>
+  <a href="https://wa.me/5491133777344?text=Hola%2C%20quer%C3%ADa%20consultar%20por%20un%20turno" target="_blank" rel="noopener" class="wa" aria-label="Escribinos por WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-3.3-.8-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .5l-.3.5-.4.5c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l2 1c.3.1.5.2.5.3.1.1.1.7-.1 1.3z"/></svg></a>
 </div>
 
 <script>
@@ -444,8 +449,13 @@ const ICONS = {
   comb:'<rect x="3" y="4" width="18" height="5" rx="1.5"/><path d="M5 9v10M8 9v8M11 9v10M14 9v8M17 9v10M20 9v8"/>'
 };
 const SERVICIOS = [
-  {id:"mani", nombre:"Manicuría", dur:60, desc:"Semipermanente, kapping, esculpidas, encapsuladas en gel, french y diseños.", ico:"hand"},
-  {id:"pedi", nombre:"Pedicuría", dur:60, desc:"Limpieza, limado y esmaltado. Pies listos para las sandalias.", ico:"foot"}
+  {id:"mani", nombre:"Manicuría", dur:60, desc:"Trabajamos con capping, soft gel y semipermanente, para que tus manos luzcan siempre impecables.", ico:"hand"},
+  {id:"pedi", nombre:"Pedicuría", dur:60, desc:"Pedicura completa: no es solo belleza para tus pies, también retiramos piel dura, callos e imperfecciones, dejándolos suaves y saludables.", ico:"foot"}
+];
+/* Servicios que se consultan por WhatsApp (no se reservan en la agenda online) */
+const OTROS = [
+  {nombre:"Masajes", desc:"Contamos con masajista profesional para que te regales un momento de relax: masajes reductores, relajantes, con piedras calientes, descontracturantes, reflexología y electrodos.", ico:"leaf", wa:"5491168721229", msg:"Hola, quería consultar por masajes"},
+  {nombre:"Rostro y tratamientos faciales", desc:"Para tu piel: limpieza facial profunda, hidratación, tratamiento aclarante y desmanchante, tratamiento contra el acné, reafirmante facial, dermapen, hilos de colágeno y peeling.", ico:"face", wa:"5491123732591", msg:"Hola, quería consultar por tratamientos faciales"}
 ];
 const BLOQUES = [["08:00","12:00","Mañana"],["13:00","20:00","Tarde"]];
 const DIAS_ABIERTO = [2,3,4,5,6]; // mar a sáb
@@ -566,14 +576,15 @@ $("#form").addEventListener("submit",async e=>{
   }
   btn.textContent="Confirmar reserva";
   $("#flow").style.display="none"; $(".book-head").style.display="none";
-  $("#ok-text").innerHTML=`${$("#nombre").value.split(" ")[0]}, reservaste <b>${state.svc.nombre}</b> para el ${$("#pick2").textContent} a las ${state.hora} h. Te escribimos por WhatsApp para confirmarlo.`;
+  $("#ok-text").innerHTML=`${$("#nombre").value.split(" ")[0]}, reservaste <b>${state.svc.nombre}</b> con Fatima Mailin para el ${$("#pick2").textContent} a las ${state.hora} h. Te escribimos por WhatsApp para confirmarlo.`;
   $("#ok").style.display="block"; go($("#agenda"));
 });
 function alertBox(html){let el=$("#form-err");if(!el){el=document.createElement("p");el.id="form-err";el.className="note";el.style.color="#a3372f";$("#confirm").after(el)}el.innerHTML=html}
 $("#again").addEventListener("click",()=>{setSel([]);$("#form").reset();$("#ok").style.display="none";$("#flow").style.display="";$(".book-head").style.display="";render();go($("#agenda"))});
 
 // lista de servicios
-$("#svc-list").innerHTML=SERVICIOS.map(s=>`<div class="item"><span class="ico">${svg(s.ico)}</span><h3>${s.nombre}</h3><p>${s.desc}</p><a class="go" href="#agenda" data-svc="${s.id}">Reservar · ${fmtDur(s.dur)} →</a></div>`).join("");
+$("#svc-list").innerHTML=SERVICIOS.map(s=>`<div class="item"><span class="ico">${svg(s.ico)}</span><h3>${s.nombre}</h3><p>${s.desc}</p><a class="go" href="#agenda" data-svc="${s.id}">Reservar turno online →</a></div>`).join("")
+  + OTROS.map(s=>`<div class="item"><span class="ico">${svg(s.ico)}</span><h3>${s.nombre}</h3><p>${s.desc}</p><a class="go" href="https://wa.me/${s.wa}?text=${encodeURIComponent(s.msg)}" target="_blank" rel="noopener">Consultar por WhatsApp →</a></div>`).join("");
 $("#svc-list").addEventListener("click",e=>{const a=e.target.closest("[data-svc]");if(!a)return;e.preventDefault();setSel([a.dataset.svc]);render();go($("#s2"))});
 
 // próximo turno libre
