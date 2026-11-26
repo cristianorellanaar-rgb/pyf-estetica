@@ -1,0 +1,39 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAdmin() {
+      return request.auth != null && request.auth.uid == 'ADMIN_UID';
+    }
+
+    // Turnos: solo la administradora los lee y modifica.
+    // Cualquiera puede CREAR uno desde la web, con datos validados.
+    match /turnos/{id} {
+      allow read, update, delete: if isAdmin();
+      allow create: if isAdmin() || (
+        request.resource.data.keys().hasOnly(['fecha','horaInicio','horaFin','cliente','telefono','servicio','duracionMinutos','comentario','creado','origen'])
+        && request.resource.data.origen == 'web'
+        && request.resource.data.fecha is string && request.resource.data.fecha.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
+        && request.resource.data.horaInicio is string && request.resource.data.horaInicio.matches('^[0-9]{2}:[0-9]{2}$')
+        && request.resource.data.cliente is string && request.resource.data.cliente.size() > 1 && request.resource.data.cliente.size() <= 80
+        && request.resource.data.telefono is string && request.resource.data.telefono.size() <= 30
+        && request.resource.data.servicio is string && request.resource.data.servicio.size() <= 60
+        && request.resource.data.duracionMinutos is int && request.resource.data.duracionMinutos > 0 && request.resource.data.duracionMinutos <= 180
+        && (!('comentario' in request.resource.data) || (request.resource.data.comentario is string && request.resource.data.comentario.size() <= 300))
+      );
+    }
+
+    // Disponibilidad: pública para leer (solo fecha/hora, sin datos personales).
+    // La web solo puede crear casilleros libres (si ya existe, la escritura falla: no hay doble reserva).
+    match /disponibilidad/{id} {
+      allow read: if true;
+      allow update, delete: if isAdmin();
+      allow create: if isAdmin() || (
+        request.resource.data.keys().hasOnly(['fecha','hora','ocupado','turnoId'])
+        && id == request.resource.data.fecha + '_' + request.resource.data.hora
+        && request.resource.data.ocupado == true
+        && getAfter(/databases/$(database)/documents/turnos/$(request.resource.data.turnoId)).data.fecha == request.resource.data.fecha
+      );
+    }
+  }
+}

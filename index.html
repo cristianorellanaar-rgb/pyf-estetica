@@ -422,7 +422,7 @@ footer .logo{box-shadow:0 0 0 2px rgba(255,255,255,.25)}
       <a href="https://www.instagram.com/pf_est.corporal/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".9" fill="currentColor"/></svg></a>
       <a href="https://wa.me/5491133777344?text=Hola%20Fatima%2C%20quer%C3%ADa%20consultar%20por%20un%20turno" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-3.3-.8-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .5l-.3.5-.4.5c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l2 1c.3.1.5.2.5.3.1.1.1.7-.1 1.3z"/></svg></a>
     </div>
-    <div class="copy">© <span id="yr"></span> P&amp;F Estética · Turnos online</div>
+    <div class="copy">© <span id="yr"></span> P&amp;F Estética · Turnos online · <a href="admin.html" style="color:#d8aea8">Acceso agenda</a></div>
   </div>
 </footer>
 
@@ -592,12 +592,12 @@ render(); onScroll();
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
 import { getFirestore, collection, query, where, onSnapshot, doc, writeBatch } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 const app = initializeApp({
-  apiKey: "AIzaSyBYLPdFHiheMRJJdITq2cHP8zZvPEux448",
-  authDomain: "pyf-estetica.firebaseapp.com",
-  projectId: "pyf-estetica",
-  storageBucket: "pyf-estetica.firebasestorage.app",
-  messagingSenderId: "85421227791",
-  appId: "1:85421227791:web:d98a132290441c77f7887a"
+  apiKey: "AIzaSyCcnUVXsH_0RIdtgrQzNuA9f9yLYhvDOkg",
+  authDomain: "pyfestetica-cdd45.firebaseapp.com",
+  projectId: "pyfestetica-cdd45",
+  storageBucket: "pyfestetica-cdd45.firebasestorage.app",
+  messagingSenderId: "1093207548114",
+  appId: "1:1093207548114:web:06564ed84c51b1f8f38d0b"
 });
 const db = getFirestore(app);
 window.guardarTurno = async (turno, slots) => {
