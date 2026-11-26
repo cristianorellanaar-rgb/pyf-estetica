@@ -224,11 +224,12 @@ footer .copy{width:100%;font-size:13px;color:#d8aea8}
 @media(max-width:760px){.promo-in{flex-direction:column;align-items:stretch;padding:20px 18px}.promo-btn{text-align:center}}
 
 .lead{color:var(--muted);margin:8px 0 0;font-size:15.5px}
-.gallery{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;gap:10px;height:420px}
-.g{margin:0;border-radius:20px;background:linear-gradient(160deg,#f3d9d1,#e3b3ab);display:grid;place-items:center;color:rgba(90,42,51,.55);font-size:13px;overflow:hidden}
-.g img{width:100%;height:100%;object-fit:cover}
-.g.big{grid-row:span 2}
-@media(max-width:760px){.gallery{height:auto;grid-template-columns:1fr 1fr;grid-template-rows:none}.g{aspect-ratio:1}.g.big{grid-column:span 2;grid-row:auto;aspect-ratio:4/3}}
+.gallery{display:grid;grid-template-columns:1.2fr 1fr .8fr;grid-template-rows:230px 230px;gap:10px}
+.g{margin:0;border-radius:20px;background:#efe3df;overflow:hidden}
+.g img{width:100%;height:100%;object-fit:cover;display:block}
+.g-c img{object-position:78% center}
+.g-a{grid-row:span 2}.g-d{grid-column:3;grid-row:1/span 2}
+@media(max-width:760px){.gallery{grid-template-columns:1fr 1fr;grid-template-rows:none}.g-a,.g-b{grid-column:span 2;grid-row:auto;aspect-ratio:4/3}.g-c,.g-d{grid-column:auto;grid-row:auto;aspect-ratio:3/4}}
 
 .logo{width:42px;height:42px;border-radius:50%;display:block;box-shadow:0 0 0 2px #fff,0 0 0 3px #c9a45c}
 footer .logo{box-shadow:0 0 0 2px rgba(255,255,255,.25)}
@@ -252,7 +253,7 @@ footer .logo{box-shadow:0 0 0 2px rgba(255,255,255,.25)}
       <a href="#servicios">Servicios</a>
       <a href="#como">Cómo reservar</a>
       <a href="#trabajos">Trabajos</a>
-      <a href="#local">El local</a>
+      <a href="#local">El espacio</a>
       <a href="#visitanos">Horarios</a>
     </nav>
     <a href="#agenda" class="pill">Reservar</a>
@@ -379,11 +380,12 @@ footer .logo{box-shadow:0 0 0 2px rgba(255,255,255,.25)}
 
 <section class="block" id="local" style="padding-top:10px">
   <div class="wrap">
-    <div class="sec-head"><span class="eyebrow">Nuestro local</span><h2>Te esperamos en Tortuguitas</h2><p class="lead">Un espacio tranquilo para que te relajes mientras te atendemos.</p></div>
+    <div class="sec-head"><span class="eyebrow">Nuestro espacio</span><h2>Te esperamos en Tortuguitas</h2><p class="lead">Un lugar cálido y tranquilo para que te relajes mientras te atendemos. Estamos en El Salvador 1363.</p></div>
     <div class="gallery">
-      <figure class="g big"><span>Foto del local</span></figure>
-      <figure class="g"><span>Foto</span></figure>
-      <figure class="g"><span>Foto</span></figure>
+      <figure class="g g-a"><img src="img/local-fachada.webp" alt="Frente de P&amp;F Estética en El Salvador 1363, Tortuguitas" loading="lazy"></figure>
+      <figure class="g g-b"><img src="img/local-salon.webp" alt="Salón de atención con vista a la calle" loading="lazy"></figure>
+      <figure class="g g-c"><img src="img/local-puesto.webp" alt="Puesto de manicuría con esmaltes" loading="lazy"></figure>
+      <figure class="g g-d"><img src="img/local-entrada.webp" alt="Entrada del local" loading="lazy"></figure>
     </div>
   </div>
 </section>
