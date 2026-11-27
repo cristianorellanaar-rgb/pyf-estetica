@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /ig-src/
+
+Sitemap: https://pyfestetica.com.ar/sitemap.xml
