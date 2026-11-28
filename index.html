@@ -709,14 +709,15 @@ $("#form").addEventListener("submit",async e=>{
   const slots=[]; for(let m=toMin(state.hora);m<toMin(state.hora)+state.svc.dur;m+=SLOT) slots.push(toH(m));
   if(slots.some(h=>OCUP.has(state.fecha+"_"+h))){ alertBox("Ese horario se acaba de ocupar. Elegí otro, por favor."); state.hora=null; render(); go($("#s3")); return; }
   btn.disabled=true; btn.textContent="Enviando…";
-  let enAgenda=false;
-  try{ if(window.guardarTurno){ await window.guardarTurno({fecha:state.fecha,horaInicio:state.hora,horaFin:fin,cliente:nombre,telefono:tel,servicio:state.svc.nombre,duracionMinutos:state.svc.dur,comentario:obs,creado:new Date().toISOString(),origen:"web"},slots); enAgenda=true; } }catch(err){ console.warn("agenda",err); }
+  let enAgenda=false, turnoId="";
+  try{ if(window.guardarTurno){ turnoId=await window.guardarTurno({fecha:state.fecha,horaInicio:state.hora,horaFin:fin,cliente:nombre,telefono:tel,servicio:state.svc.nombre,duracionMinutos:state.svc.dur,comentario:obs,creado:new Date().toISOString(),origen:"web"},slots)||""; enAgenda=true; } }catch(err){ console.warn("agenda",err); }
   try{
     const r=await fetch(MAIL_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({
       _subject:`Nueva reserva: ${state.svc.nombre} · ${dia} ${state.hora} h`,
       _template:"table", _captcha:"false",
       Cliente:nombre, WhatsApp:tel, Servicio:state.svc.nombre, Duracion:fmtDur(state.svc.dur),
       Dia:dia, Fecha:state.fecha, Horario:`${state.hora} a ${fin} h`, Comentario:obs||"-", Agenda: enAgenda?"Ya quedó cargado en la agenda":"Cargalo en la agenda (admin.html)",
+      "Confirmar en la agenda":`https://pyfestetica.com.ar/admin.html?f=${state.fecha}${turnoId?"&t="+turnoId:""}`,
       Escribirle:`https://wa.me/549${tel.replace(/\D/g,"").replace(/^0/,"").replace(/^15/,"")}`
     })});
     const j=await r.json().catch(()=>({}));
@@ -779,6 +780,7 @@ window.guardarTurno = async (turno, slots) => {
   batch.set(ref, turno);
   for (const h of slots) batch.set(doc(db, "disponibilidad", `${turno.fecha}_${h}`), { fecha: turno.fecha, hora: h, ocupado: true, turnoId: ref.id });
   await batch.commit();
+  return ref.id;
 };
 const d = new Date(), h = new Date(); h.setDate(h.getDate()+DIAS_ADELANTE);
 const q = query(collection(db,"disponibilidad"), where("fecha",">=",iso(d)), where("fecha","<=",iso(h)));

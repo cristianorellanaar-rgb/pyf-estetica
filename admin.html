@@ -313,6 +313,8 @@ let sel = iso(hoy);
 let turnos = {};      // id -> turno (del mes visible)
 let unsub = null;
 let viendo = null;
+/* Enlace directo desde el correo: admin.html?f=AAAA-MM-DD&t=idTurno */
+const deep = (() => { const p = new URLSearchParams(location.search); const f = p.get("f"); return /^\d{4}-\d{2}-\d{2}$/.test(f||"") ? { f, t: p.get("t") } : null; })();
 
 function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),2200); }
 
@@ -327,6 +329,7 @@ function suscribir(){
   unsub = onSnapshot(q, snap => {
     turnos = {}; snap.forEach(d => turnos[d.id] = { id:d.id, ...d.data() });
     render();
+    if (deep && deep.t && turnos[deep.t]) { const id = deep.t; deep.t = null; setTimeout(()=>{ $("#day").scrollIntoView({block:"start"}); verTurno(id); },150); history.replaceState(null,"",location.pathname); }
   }, err => { console.error(err); $("#day-body").innerHTML = `<div class="empty"><b>No se pudieron cargar los turnos</b>Revisá la conexión y volvé a entrar.</div>`; });
 }
 const esPend = t => t.servicio!=="Bloqueado" && t.origen==="web" && t.estado!=="confirmado";
@@ -554,7 +557,10 @@ $("#logout-btn").onclick = () => signOut(auth);
 onAuthStateChanged(auth, user => {
   $("#login-view").hidden = !!user;
   $("#app").hidden = !user;
-  if (user) { suscribir(); render(); }
+  if (user) {
+    if (deep && deep.f) { sel = deep.f; const d = fromIso(sel); mes = new Date(d.getFullYear(), d.getMonth(), 1); if (!deep.t) { history.replaceState(null,"",location.pathname); setTimeout(()=>$("#day").scrollIntoView({block:"start"}),300); } }
+    suscribir(); render();
+  }
   else if (unsub) { unsub(); unsub = null; }
 });
 setInterval(() => { if (!$("#app").hidden) renderHello(); }, 60000);
