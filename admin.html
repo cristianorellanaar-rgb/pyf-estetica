@@ -288,15 +288,16 @@ const auth = getAuth(app);
 
 /* ---------- Horario ---------- */
 const DIAS_ABIERTO = [2,3,4,5,6]; // mar a sáb
-const BLOQUES = [["08:00","12:00"],["13:00","20:00"]];
+const HORARIO = {2:[["08:30","11:00"],["13:30","20:00"]],3:[["08:30","11:00"],["13:30","20:00"]],4:[["08:30","11:00"],["13:30","20:00"]],5:[["08:30","11:00"],["13:30","20:00"]],6:[["08:30","19:00"]]};
 const SLOT = 30;
 const toMin = h => { const [a,b] = h.split(":").map(Number); return a*60+b; };
 const toH = m => String(Math.floor(m/60)).padStart(2,"0")+":"+String(m%60).padStart(2,"0");
 const iso = d => d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
 const fromIso = s => { const [y,m,d] = s.split("-").map(Number); return new Date(y,m-1,d); };
-const SLOTS = []; for (const [a,b] of BLOQUES) for (let m=toMin(a); m<toMin(b); m+=SLOT) SLOTS.push(toH(m));
+const bloquesDe = f => HORARIO[fromIso(f).getDay()] || [];
+const slotsDia = f => { const out=[]; for (const [a,b] of bloquesDe(f)) for (let m=toMin(a); m<toMin(b); m+=SLOT) out.push(toH(m)); return out; };
 const slotsDe = (hora, dur) => { const out=[]; for (let m=toMin(hora); m<toMin(hora)+dur; m+=SLOT) out.push(toH(m)); return out; };
-const entra = (hora, dur) => BLOQUES.some(([a,b]) => toMin(hora)>=toMin(a) && toMin(hora)+dur<=toMin(b));
+const entra = (f, hora, dur) => bloquesDe(f).some(([a,b]) => toMin(hora)>=toMin(a) && toMin(hora)+dur<=toMin(b));
 const fmtDur = m => m<60 ? m+" min" : (m%60 ? Math.floor(m/60)+" h "+(m%60) : (m/60)+" h");
 const $ = s => document.querySelector(s);
 const cap = s => s.charAt(0).toUpperCase()+s.slice(1);
@@ -358,7 +359,7 @@ function renderCal(){
     const d = new Date(start); d.setDate(start.getDate()+i);
     if (i>=35 && d.getMonth()!==mes.getMonth()) break;
     const f = iso(d), list = delDia(f).filter(t=>t.servicio!=="Bloqueado");
-    const lleno = DIAS_ABIERTO.includes(d.getDay()) && ocupadosDia(f).size >= SLOTS.length;
+    const lleno = DIAS_ABIERTO.includes(d.getDay()) && slotsDia(f).every(h=>ocupadosDia(f).has(h));
     const cls = ["d", d.getMonth()!==mes.getMonth()?"out":"", !DIAS_ABIERTO.includes(d.getDay())?"closed":"", d<hoy?"past":"", f===iso(hoy)?"today":"", f===sel?"sel":""].join(" ");
     html += `<button type="button" class="${cls}" data-f="${f}" aria-label="${d.toLocaleDateString("es-AR",{weekday:"long",day:"numeric",month:"long"})}${list.length?`, ${list.length} turnos`:""}"><span class="n">${d.getDate()}</span><span class="c ${list.length?(lleno?"full":""):"none"} ${list.some(esPend)?"pend":""}">${list.length||0}</span></button>`;
   }
@@ -386,7 +387,7 @@ function renderDay(){
   }).join("") + `</div>`;
   if (abierto && d>=hoy) {
     const occ = ocupadosDia(sel);
-    const libres = SLOTS.filter(h => !occ.has(h) && !(sel===iso(hoy) && toMin(h) < new Date().getHours()*60+new Date().getMinutes()));
+    const libres = slotsDia(sel).filter(h => !occ.has(h) && !(sel===iso(hoy) && toMin(h) < new Date().getHours()*60+new Date().getMinutes()));
     html += `<div class="libres"><h3>Horarios libres (${libres.length})</h3>${libres.length?`<div class="chips">${libres.map(h=>`<button type="button" class="chip" data-h="${h}">${h}</button>`).join("")}</div>`:`<div style="color:var(--muted);font-size:14px">Día completo.</div>`}</div>`;
   }
   $("#day-body").innerHTML = html;
@@ -485,7 +486,7 @@ function durElegida(){ return ["manos","pies"].reduce((a,c)=>{ const o=$("#n-"+c
 function servicioElegido(){ return ["manos","pies"].map(c=>$("#n-"+c).value).filter(Boolean).join(" + "); }
 function horasPosibles(dur){
   const occ = ocupadosDia(sel); const ahora = new Date().getHours()*60+new Date().getMinutes();
-  return SLOTS.filter(h => entra(h,dur) && slotsDe(h,dur).every(x=>!occ.has(x)) && !(sel===iso(hoy) && toMin(h)<ahora));
+  return slotsDia(sel).filter(h => entra(sel,h,dur) && slotsDe(h,dur).every(x=>!occ.has(x)) && !(sel===iso(hoy) && toMin(h)<ahora));
 }
 function llenarHoras(pref){
   const dur = Number($("#n-dur").value); const hs = horasPosibles(dur);

@@ -534,7 +534,7 @@ footer .copy,footer .copy a{color:#9a8f7c !important}
           <table class="hours">
             <tr><td>Lunes a sábado</td><td>8 a 12 h · 13 a 20 h</td></tr>
             <tr><td>Domingo</td><td>Cerrado</td></tr>
-            <tr><td>Manos y pies</td><td>Martes a sábado</td></tr>
+            <tr><td>Manos y pies</td><td>Mar a vie 8:30 a 11 h · 13:30 a 20 h<br>Sáb 8:30 a 19 h</td></tr>
           </table>
         </div>
       </div>
@@ -603,7 +603,9 @@ const OTROS = [
   {nombre:"Masajes", desc:"Contamos con masajista profesional para que te regales un momento de relax: masajes reductores, relajantes, con piedras calientes, descontracturantes, reflexología y electrodos.", ico:"leaf", wa:"5491168721229", msg:"Hola, quería consultar por masajes"},
   {nombre:"Rostro y tratamientos faciales", desc:"Para tu piel: limpieza facial profunda, hidratación, tratamiento aclarante y desmanchante, tratamiento contra el acné, reafirmante facial, dermapen, hilos de colágeno y peeling.", ico:"face", wa:"5491123732591", msg:"Hola, quería consultar por tratamientos faciales"}
 ];
-const BLOQUES = [["08:00","12:00","Mañana"],["13:00","20:00","Tarde"]];
+/* Horario de Fatima (manos y pies): mar a vie 8:30-11 y 13:30-20 · sáb 8:30-19 corrido */
+const HORARIO = {2:[["08:30","11:00"],["13:30","20:00"]],3:[["08:30","11:00"],["13:30","20:00"]],4:[["08:30","11:00"],["13:30","20:00"]],5:[["08:30","11:00"],["13:30","20:00"]],6:[["08:30","19:00"]]};
+const bloquesDe = fecha => HORARIO[new Date(fecha+"T12:00").getDay()]||[];
 const DIAS_ABIERTO = [2,3,4,5,6]; // mar a sáb
 const SLOT = 30, DIAS_ADELANTE = 21;
 
@@ -624,17 +626,15 @@ function ocupadoEn(fecha,h){
 }
 function libresDelDia(fecha,dur){
   const hoy=new Date(), esHoy=fecha===iso(hoy), ahora=hoy.getHours()*60+hoy.getMinutes()+60;
-  const out=[];
-  for(const [ini,fin,label] of BLOQUES){
-    const g={label,slots:[]};
+  const man={label:"Mañana",slots:[]}, tar={label:"Tarde",slots:[]};
+  for(const [ini,fin] of bloquesDe(fecha)){
     for(let m=toMin(ini); m+dur<=toMin(fin); m+=SLOT){
       let libre=!(esHoy&&m<ahora);
       for(let x=m;x<m+dur&&libre;x+=SLOT) if(ocupadoEn(fecha,toH(x))) libre=false;
-      g.slots.push({h:toH(m),libre});
+      (m<13*60?man:tar).slots.push({h:toH(m),libre});
     }
-    out.push(g);
   }
-  return out;
+  return [man,tar].filter(g=>g.slots.length);
 }
 
 const state={sel:new Set(),svc:null,fecha:null,hora:null};
