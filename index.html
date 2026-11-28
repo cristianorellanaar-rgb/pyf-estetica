@@ -607,7 +607,7 @@ const OTROS = [
 const HORARIO = {2:[["08:30","11:00"],["13:30","20:00"]],3:[["08:30","11:00"],["13:30","20:00"]],4:[["08:30","11:00"],["13:30","20:00"]],5:[["08:30","11:00"],["13:30","20:00"]],6:[["08:30","19:00"]]};
 const bloquesDe = fecha => HORARIO[new Date(fecha+"T12:00").getDay()]||[];
 const DIAS_ABIERTO = [2,3,4,5,6]; // mar a sáb
-const SLOT = 30, DIAS_ADELANTE = 21;
+const SLOT = 15, DIAS_ADELANTE = 21;
 
 const $ = s => document.querySelector(s);
 const toMin = h => {const [a,b]=h.split(":").map(Number);return a*60+b};
@@ -629,8 +629,12 @@ function libresDelDia(fecha,dur){
   const man={label:"Mañana",slots:[]}, tar={label:"Tarde",slots:[]};
   for(const [ini,fin] of bloquesDe(fecha)){
     for(let m=toMin(ini); m+dur<=toMin(fin); m+=SLOT){
+      // Se ofrecen los horarios en punto y y media, y además el horario justo después de que termina otro turno
+      const trasTurno = m>toMin(ini) && ocupadoEn(fecha,toH(m-SLOT)) && !ocupadoEn(fecha,toH(m));
+      if(m%30 && !trasTurno) continue;
       let libre=!(esHoy&&m<ahora);
       for(let x=m;x<m+dur&&libre;x+=SLOT) if(ocupadoEn(fecha,toH(x))) libre=false;
+      if(m%30 && !libre) continue;
       (m<13*60?man:tar).slots.push({h:toH(m),libre});
     }
   }

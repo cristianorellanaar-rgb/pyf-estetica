@@ -251,7 +251,7 @@ h1,h2,h3{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;margin:0
     </div>
     <div class="row2">
       <div class="f"><label for="n-dur">Duración</label>
-        <select id="n-dur"><option value="30">30 min</option><option value="45">45 min</option><option value="60" selected>1 h</option><option value="75">1 h 15</option><option value="90">1 h 30</option><option value="120">2 h</option><option value="150">2 h 30</option><option value="180">3 h</option><option value="210">3 h 30</option></select>
+        <select id="n-dur"></select>
       </div>
       <div class="f"><label for="n-hora">Hora</label><select id="n-hora"></select></div>
     </div>
@@ -268,7 +268,7 @@ h1,h2,h3{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;margin:0
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
-import { getFirestore, collection, query, where, onSnapshot, doc, writeBatch, updateDoc } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+import { getFirestore, collection, query, where, onSnapshot, doc, writeBatch, updateDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -289,7 +289,7 @@ const auth = getAuth(app);
 /* ---------- Horario ---------- */
 const DIAS_ABIERTO = [2,3,4,5,6]; // mar a sáb
 const HORARIO = {2:[["08:30","11:00"],["13:30","20:00"]],3:[["08:30","11:00"],["13:30","20:00"]],4:[["08:30","11:00"],["13:30","20:00"]],5:[["08:30","11:00"],["13:30","20:00"]],6:[["08:30","19:00"]]};
-const SLOT = 30;
+const SLOT = 15;
 const toMin = h => { const [a,b] = h.split(":").map(Number); return a*60+b; };
 const toH = m => String(Math.floor(m/60)).padStart(2,"0")+":"+String(m%60).padStart(2,"0");
 const iso = d => d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
@@ -329,8 +329,26 @@ function suscribir(){
   unsub = onSnapshot(q, snap => {
     turnos = {}; snap.forEach(d => turnos[d.id] = { id:d.id, ...d.data() });
     render();
+    completarCasilleros();
     if (deep && deep.t && turnos[deep.t]) { const id = deep.t; deep.t = null; setTimeout(()=>{ $("#day").scrollIntoView({block:"start"}); verTurno(id); },150); history.replaceState(null,"",location.pathname); }
   }, err => { console.error(err); $("#day-body").innerHTML = `<div class="empty"><b>No se pudieron cargar los turnos</b>Revisá la conexión y volvé a entrar.</div>`; });
+}
+/* Los turnos cargados antes del cambio a 15 min ocupan casilleros de 30 min: se completan los de :15 y :45 */
+let completando = false;
+async function completarCasilleros(){
+  if (completando) return; completando = true;
+  try {
+    const desde = iso(hoy), fut = Object.values(turnos).filter(t => t.fecha >= desde);
+    if (!fut.length) return;
+    const snap = await getDocs(query(collection(db,"disponibilidad"), where("fecha",">=",desde)));
+    const hay = new Set(); snap.forEach(d => hay.add(d.id));
+    const batch = writeBatch(db); let n = 0;
+    for (const t of fut) for (const h of slotsDe(t.horaInicio, t.duracionMinutos||60)) {
+      const id = `${t.fecha}_${h}`;
+      if (!hay.has(id) && n < 450) { batch.set(doc(db,"disponibilidad",id), { fecha:t.fecha, hora:h, ocupado:true, turnoId:t.id }); hay.add(id); n++; }
+    }
+    if (n) await batch.commit();
+  } catch (e) { console.warn("casilleros", e); } finally { completando = false; }
 }
 const esPend = t => t.servicio!=="Bloqueado" && t.origen==="web" && t.estado!=="confirmado";
 const delDia = f => Object.values(turnos).filter(t => t.fecha===f).sort((a,b)=>a.horaInicio.localeCompare(b.horaInicio));
@@ -390,7 +408,7 @@ function renderDay(){
   }).join("") + `</div>`;
   if (abierto && d>=hoy) {
     const occ = ocupadosDia(sel);
-    const libres = slotsDia(sel).filter(h => !occ.has(h) && !(sel===iso(hoy) && toMin(h) < new Date().getHours()*60+new Date().getMinutes()));
+    const libres = slotsDia(sel).filter(h => !occ.has(h) && (toMin(h)%30===0 || occ.has(toH(toMin(h)-SLOT))) && !(sel===iso(hoy) && toMin(h) < new Date().getHours()*60+new Date().getMinutes()));
     html += `<div class="libres"><h3>Horarios libres (${libres.length})</h3>${libres.length?`<div class="chips">${libres.map(h=>`<button type="button" class="chip" data-h="${h}">${h}</button>`).join("")}</div>`:`<div style="color:var(--muted);font-size:14px">Día completo.</div>`}</div>`;
   }
   $("#day-body").innerHTML = html;
@@ -479,6 +497,7 @@ const SERVICIOS = [
   {cat:"pies", nombre:"Pedicuría completa con semi", dur:90}
 ];
 for (const c of ["manos","pies"]) $("#n-"+c).innerHTML = `<option value="">— Ninguno —</option>` + SERVICIOS.filter(s=>s.cat===c).map(s=>`<option value="${s.nombre}" data-d="${s.dur}">${s.nombre} · ${fmtDur(s.dur)}</option>`).join("");
+$("#n-dur").innerHTML = Array.from({length:20},(_,i)=>(i+1)*15).map(m=>`<option value="${m}" ${m===60?"selected":""}>${fmtDur(m)}</option>`).join("");
 let nSvc = { v:"Turno" };
 function setDur(m){
   const sel = $("#n-dur");
